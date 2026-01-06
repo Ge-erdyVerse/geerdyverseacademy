@@ -837,6 +837,46 @@ header,
   position: relative;
   z-index: 3;
 }
+
+/* ================================
+   Galaxy Intake Animation
+================================ */
+
+.galaxy.consumed {
+  animation: galaxyConsume 0.7s ease-in forwards;
+  pointer-events: none;
+}
+
+@keyframes galaxyConsume {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+
+  60% {
+    transform: translate(
+      calc(50vw - var(--gx)),
+      calc(50vh - var(--gy))
+    ) scale(0.6);
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: translate(
+      calc(50vw - var(--gx)),
+      calc(50vh - var(--gy))
+    ) scale(0.05);
+    opacity: 0;
+  }
+}
+
+/* ================================
+   Black Hole Reaction on Intake
+================================ */
+
+.blackhole.intake {
+  animation: pull 0.3s ease-in-out 2;
+}
     
   </style>
 </head>
@@ -912,8 +952,46 @@ header,
     </p>
   </section>
 
+  <script>
+  document.querySelectorAll('.galaxy').forEach(galaxy => {
+    galaxy.addEventListener('click', function (e) {
+      e.preventDefault();
+
+      // Get galaxy position
+      const rect = galaxy.getBoundingClientRect();
+      const gx = rect.left + rect.width / 2;
+      const gy = rect.top + rect.height / 2;
+
+      // Store position for animation
+      galaxy.style.setProperty('--gx', gx + 'px');
+      galaxy.style.setProperty('--gy', gy + 'px');
+
+      // Trigger galaxy consumption
+      galaxy.classList.add('consumed');
+      
+      // Trigger black hole reaction
+      const blackhole = document.querySelector('.blackhole');
+      blackhole?.classList.add('intake');
+      
+      // Remove intake class after reaction
+      setTimeout(() => {
+        blackhole?.classList.remove('intake');
+      }, 600);
+
+
+      const target = galaxy.getAttribute('href');
+
+      // Navigate after animation
+      setTimeout(() => {
+        window.location.href = target;
+      }, 700);
+    });
+  });
+</script>
+
 </body>
 </html>
+
 
 
 
