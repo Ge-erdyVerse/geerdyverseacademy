@@ -158,12 +158,6 @@
   50% { transform: scale(1.03); }
 }
 
-/* Push content above eye */
-body > * {
-  position: relative;
-  z-index: 2;
-}
-
 /* ================================
    Swirling Stars / Accretion Disk
 ================================ */
@@ -794,6 +788,30 @@ body > * {
   }
 
 }
+
+/* ================================
+   Final Layering & Click Fix
+================================ */
+
+/* Background universe */
+.eye-container {
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Galaxies must always be clickable */
+.galaxy {
+  position: fixed;
+  z-index: 5;
+  pointer-events: auto;
+}
+
+/* UI elements */
+header,
+.placeholder {
+  position: relative;
+  z-index: 3;
+}
     
   </style>
 </head>
@@ -871,6 +889,7 @@ body > * {
 
 </body>
 </html>
+
 
 
 
