@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Characters as Systems — Geerdyverse Academy</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --void-black:#0b0710;
+      --nebula-purple:#221324;
+      --paper-light:#fffef8;
+      --accent-violet:#7c5cff;
+      --accent-rose:#ff7ac4;
+      --text-dark:#2b163a;
+      --text-muted:#6e5b7b;
+    }
+
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      font-family:'Inter',system-ui,sans-serif;
+      background:linear-gradient(180deg,var(--void-black),var(--nebula-purple));
+      color:var(--paper-light);
+      line-height:1.6;
+    }
+
+    /* Stars */
+    .stars{
+      position:fixed;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+      background-image:
+        radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,.5), transparent),
+        radial-gradient(1px 1px at 70% 60%, rgba(255,255,255,.3), transparent);
+      background-size:260px 260px;
+      animation:drift 160s linear infinite;
+    }
+    @keyframes drift{
+      from{transform:translateY(0);}
+      to{transform:translateY(-350px);}
+    }
+    body>*{position:relative;z-index:1;}
+
+    /* Nav */
+    .nav{
+      position:sticky;
+      top:0;
+      background:rgba(11,7,16,.85);
+      backdrop-filter:blur(10px);
+    }
+    .nav-inner{
+      max-width:1100px;
+      margin:auto;
+      padding:16px 20px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .logo{
+      font-family:'Poppins',sans-serif;
+      font-weight:600;
+    }
+    .nav a{
+      color:white;
+      text-decoration:none;
+      margin-left:20px;
+      font-size:.9rem;
+    }
+
+    /* Hero */
+    .lesson-hero{
+      text-align:center;
+      padding:90px 20px 40px;
+    }
+    .lesson-hero h1{
+      font-family:'Poppins',sans-serif;
+      font-size:2.4rem;
+      margin-bottom:10px;
+    }
+    .lesson-hero p{
+      max-width:680px;
+      margin:auto;
+      color:#ddd;
+    }
+
+    .back{
+      display:inline-block;
+      margin-top:16px;
+      padding:8px 18px;
+      border-radius:20px;
+      border:1px solid var(--accent-violet);
+      color:white;
+      text-decoration:none;
+      font-size:.8rem;
+    }
+    .back:hover{
+      background:rgba(124,92,255,.15);
+    }
+
+    /* Lesson panel */
+    .lesson{
+      background:var(--paper-light);
+      color:var(--text-dark);
+      max-width:900px;
+      margin:60px auto;
+      padding:60px 50px;
+      border-radius:20px;
+    }
+
+    .lesson h2{
+      font-family:'Poppins',sans-serif;
+      margin-top:40px;
+    }
+
+    .lesson p{
+      margin:16px 0;
+    }
+
+    .note{
+      background:rgba(124,92,255,.08);
+      padding:20px;
+      border-radius:14px;
+      margin:30px 0;
+    }
+
+    .question{
+      background:#fff;
+      border-radius:14px;
+      padding:22px;
+      margin:30px 0;
+    }
+
+    textarea{
+      width:100%;
+      min-height:120px;
+      margin-top:10px;
+      padding:12px;
+      border-radius:10px;
+      border:1px solid #ddd;
+      font-family:'Inter',sans-serif;
+      resize:vertical;
+    }
+
+    .submit-wrap{
+      text-align:center;
+      margin-top:40px;
+    }
+
+    .submit-btn{
+      padding:14px 34px;
+      border-radius:28px;
+      border:none;
+      background:linear-gradient(135deg,var(--accent-violet),var(--accent-rose));
+      color:white;
+      font-size:.95rem;
+      cursor:pointer;
+    }
+
+    /* Form embed */
+    .form-embed{
+      margin-top:30px;
+      border-radius:18px;
+      overflow:hidden;
+      background:#fff;
+    }
+
+    footer{
+      text-align:center;
+      padding:40px 20px;
+      font-size:.8rem;
+      color:#aaa;
+    }
+
+    @media(max-width:600px){
+      .lesson{padding:40px 20px;}
+      .lesson-hero h1{font-size:2rem;}
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="stars"></div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="logo">Geerdyverse</div>
+    <nav>
+      <a href="academy.html">Academy</a>
+      <a href="writing-galaxy.html">Writing Galaxy</a>
+    </nav>
+  </div>
+</header>
+
+<section class="lesson-hero">
+  <h1>Characters as Systems</h1>
+  <p>
+    This lesson teaches you how to think about characters
+    as <strong>living systems</strong>, not personality labels.
+  </p>
+  <a href="writing-galaxy.html" class="back">⬅ Back to Writing Galaxy</a>
+</section>
+
+<section class="lesson">
+
+  <h2>Why Most Characters Feel Flat</h2>
+
+  <p>
+    Most characters feel flat not because the writer lacks imagination,
+    but because the character was built as a description rather than a system.
+    Writers often begin by assigning traits — brave, sarcastic, broken, kind —
+    and expect those words to somehow produce compelling behavior.
+  </p>
+
+  <p>
+    The problem is that traits describe a character <em>after</em> they act,
+    not the forces that cause the action.
+    A character can be brave in one scene and hesitant in another,
+    confident with friends and silent in the presence of authority.
+    Traits are flexible because they are labels, not engines.
+  </p>
+
+  <p>
+    When a story reaches a moment of pressure — a confrontation,
+    a choice, a risk that cannot be avoided —
+    trait-based characters tend to stall.
+    The writer has to step in and force a decision,
+    and this is when characters begin to feel artificial,
+    as if the plot is dragging them forward.
+  </p>
+
+  <p>
+    Flat characters are rarely inconsistent.
+    They are under-defined at the level that matters.
+    We know what they are like on the surface,
+    but we do not know what they want badly enough to act,
+    or what they fear enough to avoid.
+  </p>
+
+  <p>
+    Real people are not driven by personality labels.
+    They are driven by internal pressure:
+    desires they protect,
+    fears they rationalize,
+    and beliefs they defend even when those beliefs harm them.
+    These forces operate quietly,
+    but they shape decisions again and again.
+  </p>
+
+  <p>
+    When a character lacks this internal pressure,
+    their behavior feels arbitrary.
+    They agree when the plot needs agreement,
+    resist when resistance feels dramatic,
+    and hesitate because hesitation sounds serious,
+    not because something inside them is pulling back.
+  </p>
+
+  <p>
+    This is why adding more traits rarely fixes a flat character.
+    Depth does not come from accumulation.
+    It comes from alignment.
+    When a character’s wants, fears, and beliefs align,
+    patterns emerge.
+    Decisions gain momentum.
+  </p>
+
+  <p>
+    A functional character does not need to be told what to do.
+    Given a situation, their internal system produces a response.
+    Sometimes that response is noble.
+    Sometimes it is self-destructive.
+    Often it is both.
+    But it is inevitable.
+  </p>
+
+  <p>
+    This lesson is not about making characters likable or impressive.
+    It is about making them <strong>functional</strong>.
+    Functional characters generate decisions.
+    Decisions create consequences.
+    Consequences create story.
+  </p>
+
+  <div class="submit-wrap">
+    <button class="submit-btn" onclick="document.getElementById('submit-form').scrollIntoView({behavior:'smooth'})">
+      Submit for Feedback
+    </button>
+  </div>
+
+</section>
+
+<section class="lesson" id="submit-form">
+  <h2>Submit for Personal Feedback</h2>
+
+  <p>
+    When you’re ready, submit your answers below.
+    We read every response and reply by email.
+  </p>
+
+  <div class="form-embed">
+    <iframe
+      src="https://docs.google.com/forms/d/e/1FAIpQLSdqZhG2uczERghKr43fE2Q2P9xQSpm_ttQswSBY0q6H3kW1qQ/viewform?embedded=true"
+      style="width:100%; height:900px; border:0;"
+      loading="lazy">
+    </iframe>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Geerdyverse • Free Public Lesson</p>
+</footer>
+
+</body>
+</html>

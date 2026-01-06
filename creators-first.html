@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Creators First — Geerdyverse</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --void-black:#0b0710;
+      --nebula-purple:#221324;
+      --paper-light:#fffef8;
+      --accent-violet:#7c5cff;
+      --accent-rose:#ff7ac4;
+      --text-dark:#2b163a;
+      --text-muted:#6e5b7b;
+    }
+
+    * { box-sizing:border-box; }
+
+    body {
+      margin:0;
+      font-family:'Inter',system-ui,sans-serif;
+      background:linear-gradient(180deg,var(--void-black),var(--nebula-purple));
+      color:var(--paper-light);
+    }
+
+    /* Stars */
+    .stars {
+      position:fixed;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+      background-image:
+        radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,.5), transparent),
+        radial-gradient(1px 1px at 70% 60%, rgba(255,255,255,.3), transparent);
+      background-size:260px 260px;
+      animation:drift 160s linear infinite;
+    }
+
+    @keyframes drift {
+      from { transform:translateY(0); }
+      to { transform:translateY(-350px); }
+    }
+
+    body > * {
+      position:relative;
+      z-index:1;
+    }
+
+    /* Navigation */
+    header {
+      position:sticky;
+      top:0;
+      background:rgba(11,7,16,0.85);
+      backdrop-filter:blur(10px);
+    }
+
+    .nav-inner {
+      max-width:1100px;
+      margin:auto;
+      padding:16px 20px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    .logo {
+      font-family:'Poppins',sans-serif;
+      font-weight:600;
+    }
+
+    header a {
+      color:white;
+      text-decoration:none;
+      margin-left:20px;
+      font-size:.9rem;
+    }
+
+    /* Hero */
+    .hero {
+      text-align:center;
+      padding:100px 20px 60px;
+    }
+
+    .hero h1 {
+      font-family:'Poppins',sans-serif;
+      font-size:2.5rem;
+      margin-bottom:14px;
+    }
+
+    .hero p {
+      max-width:700px;
+      margin:auto;
+      color:#ddd;
+    }
+
+    /* Panel */
+    .panel {
+      background:var(--paper-light);
+      color:var(--text-dark);
+      max-width:900px;
+      margin:60px auto;
+      padding:60px 50px;
+      border-radius:20px;
+    }
+
+    .panel h2 {
+      font-family:'Poppins',sans-serif;
+      margin-top:0;
+    }
+
+    /* Tools */
+    .tools {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:30px;
+      margin-top:40px;
+    }
+
+    .tool {
+      background:#fff;
+      border-radius:18px;
+      padding:30px;
+    }
+
+    .tool h3 {
+      font-family:'Poppins',sans-serif;
+      margin-top:0;
+    }
+
+    .tool p {
+      font-size:.95rem;
+      color:#444;
+    }
+
+    .tool-btn {
+      margin-top:16px;
+      padding:10px 22px;
+      border-radius:22px;
+      background:linear-gradient(135deg,var(--accent-violet),var(--accent-rose));
+      color:white;
+      text-decoration:none;
+      font-size:.85rem;
+      display:inline-block;
+    }
+
+    .soon {
+      display:inline-block;
+      margin-top:14px;
+      font-size:.75rem;
+      color:var(--text-muted);
+    }
+
+    footer {
+      text-align:center;
+      padding:40px 20px;
+      font-size:.8rem;
+      color:#aaa;
+    }
+
+    @media(max-width:600px){
+      .panel { padding:40px 20px; }
+      .hero h1 { font-size:2rem; }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="stars"></div>
+
+<header>
+  <div class="nav-inner">
+    <div class="logo">Geerdyverse</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="academy.html">Academy</a>
+      <a href="writing-galaxy.html">Writing Galaxy</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <h1>Creators First</h1>
+  <p>
+    The Geerdyverse is built on tools that sharpen thinking,
+    deepen craft, and respect human creativity.
+    Nothing here replaces the creator.
+  </p>
+</section>
+
+<section class="panel">
+  <h2>Available & Upcoming Tools</h2>
+
+  <div class="tools">
+
+    <div class="tool">
+      <h3>✍️ Geerdyverse Quill</h3>
+      <p>
+        A focused writing environment for novels,
+        short stories, poetry, film scripts,
+        and game narratives.
+      </p>
+      <a href="quill.html" class="tool-btn">Open Quill</a>
+    </div>
+
+    <div class="tool">
+      <h3>🛠 Upcoming Tool</h3>
+      <p>
+        A creator-first system currently in development,
+        designed to support thinking and structure.
+      </p>
+      <span class="soon">Coming Soon</span>
+    </div>
+
+    <div class="tool">
+      <h3>🛠 Upcoming Tool</h3>
+      <p>
+        Another Geerdyverse application built
+        around craft, not shortcuts.
+      </p>
+      <span class="soon">Coming Soon</span>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Geerdyverse • Creators First</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Geerdyverse Quill</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --void-black: #0b0710;
+      --nebula-purple: #221324;
+      --paper-light: #fffef8;
+      --text-dark: #2b163a;
+      --text-muted: #6e5b7b;
+      --accent-violet: #7c5cff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(180deg, var(--void-black), var(--nebula-purple));
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      color: var(--text-dark);
+    }
+
+    /* ===== App Shell ===== */
+    .app {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      flex-direction: column;
+      background: var(--paper-light);
+    }
+
+    /* ===== Top Bar ===== */
+    .top-bar {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      border-bottom: 1px solid #eee;
+      font-family: 'Poppins', sans-serif;
+
+    }
+
+    .mode {
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .save-indicator {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* ===== Editor ===== */
+    .editor {
+      flex: 1;
+      padding: 28px 20px;
+      overflow-y: auto;
+    }
+
+    .title {
+      width: 100%;
+      border: none;
+      font-size: 1.2rem;
+      font-family: 'Poppins', sans-serif;
+      margin-bottom: 20px;
+      outline: none;
+      background: transparent;
+      color: var(--text-dark);
+    }
+
+    .title::placeholder {
+      color: var(--text-muted);
+    }
+
+    .writing-area {
+      width: 100%;
+      min-height: 60vh;
+      border: none;
+      resize: none;
+      font-size: 1rem;
+      line-height: 1.75;
+      outline: none;
+      font-family: 'Inter', sans-serif;
+      background: transparent;
+      color: var(--text-dark);
+    }
+
+    /* ===== Bottom Bar ===== */
+    .bottom-bar {
+      height: 44px;
+      border-top: 1px solid #eee;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      font-size: 0.8rem;
+    }
+
+    .think-btn {
+      cursor: pointer;
+      color: var(--accent-violet);
+      font-weight: 500;
+    }
+
+    /* ===== Thinking Panel ===== */
+    .thinking-panel {
+      position: fixed;
+      bottom: -100%;
+      left: 0;
+      width: 100%;
+      max-width: 900px;
+      background: var(--paper-light);
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      box-shadow: 0 -20px 60px rgba(0,0,0,0.25);
+      padding: 24px 20px;
+      transition: bottom 0.35s ease;
+    }
+
+    .thinking-panel.open {
+      bottom: 0;
+    }
+
+    .thinking-panel h3 {
+      font-family: 'Poppins', sans-serif;
+      margin-top: 0;
+    }
+
+    .thinking-panel label {
+      display: block;
+      margin-top: 18px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .thinking-panel textarea {
+      width: 100%;
+      min-height: 80px;
+      margin-top: 6px;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      resize: vertical;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ===== Responsive ===== */
+    @media (min-width: 768px) {
+      body {
+        padding: 40px 0;
+      }
+
+      .thinking-panel {
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 20px;
+      }
+    }
+
+    .mode-selector {
+  display: flex;
+  gap: 10px;
+}
+
+.mode-btn {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 14px;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+.mode-btn.active {
+  background: var(--accent-violet);
+  color: white;
+}
+
+.genre-panel {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  height: 100%;
+  width: 100%;
+  max-width: 420px;
+  background: rgba(255, 254, 248, 0.95);
+  backdrop-filter: blur(12px);
+  box-shadow: -20px 0 60px rgba(0,0,0,0.25);
+  padding: 24px 20px;
+  transition: right 0.35s ease;
+  z-index: 50;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.genre-panel.open {
+  right: 0;
+}
+
+.genre-item {
+  margin-bottom: 26px;
+}
+
+.genre-item h4 {
+  margin: 0 0 8px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.genre-item ul {
+  padding-left: 18px;
+  margin: 0;
+}
+
+.genre-item li {
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+  color: var(--text-muted);
+}
+
+  </style>
+</head>
+
+<body>
+
+  <div class="app">
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <div class="mode">Quill</div>
+      <div class="mode-selector">
+        <span class="mode-btn active" data-mode="novel">Novel</span>
+        <span class="mode-btn" data-mode="poetry">Poetry</span>
+        <span class="mode-btn" data-mode="film">Film</span>
+        <span class="mode-btn" data-mode="game">Game</span>
+        <span class="mode-btn" data-mode="notes">Notes</span>
+    </div>
+
+      <div class="save-indicator">Saved</div>
+    </div>
+
+    <!-- Editor -->
+    <div class="editor">
+      <input
+        type="text"
+        class="title"
+        placeholder="Untitled Scene"
+      />
+
+      <textarea
+        class="writing-area"
+        placeholder="Start writing..."
+      ></textarea>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="bottom-bar">
+      <div class="think-btn" onclick="toggleThink()">🧠 Think</div>
+      <div class="think-btn" onclick="toggleGenre()">🎼 Genre Rhythm</div>
+      <div class="word-count">0 words</div>
+    </div>
+
+  </div>
+
+  <!-- Thinking Panel -->
+  <div class="thinking-panel" id="thinkingPanel">
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+  <h3 style="margin:0;">Narrative Pressure</h3>
+  <span
+    onclick="toggleThink()"
+    style="cursor:pointer; font-size:0.85rem; color:#7c5cff;"
+  >
+    Close
+  </span>
+</div>
+
+<div id="thinkContent"></div>
+
+  </div>
+
+<div class="genre-panel" id="genrePanel">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+    <h3 style="margin:0;">Genre Rhythm Explorer</h3>
+    <span onclick="toggleGenre()" style="cursor:pointer; font-size:0.85rem; color:#7c5cff;">
+      Close
+    </span>
+  </div>
+
+  <div class="genre-list" id="genreList"></div>
+  <div id="structureViewer" style="margin-top:20px;"></div>
+</div>
+
+  <script>
+    const panel = document.getElementById('thinkingPanel');
+    const textArea = document.querySelector('.writing-area');
+    const wordCount = document.querySelector('.word-count');
+    
+    function toggleThink() {
+      const activeMode = document.querySelector('.mode-btn.active').dataset.mode;
+      renderThinkPanel(activeMode);
+      panel.classList.toggle('open');
+    }
+
+
+    textArea.addEventListener('input', () => {
+      const words = textArea.value.trim().split(/\s+/).filter(w => w.length);
+      wordCount.textContent = `${words.length} words`;
+    });
+
+    /* ===== ADD BELOW THIS LINE ===== */
+
+  const modeButtons = document.querySelectorAll('.mode-btn');
+
+  const modePlaceholders = {
+    novel: "Write your scene, moment, or passage here…",
+    poetry: "Line breaks matter. Let the silence speak.",
+    film: "INT./EXT. LOCATION – TIME\n\nAction.\n\nDialogue:",
+    game: "SCENE:\nPlayer choice → consequence",
+    notes: "Fragments, ideas, questions. No pressure."
+  };
+
+  modeButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      modeButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const mode = btn.dataset.mode;
+      textArea.placeholder = modePlaceholders[mode];
+    });
+  });
+
+  const thinkContent = document.getElementById('thinkContent');
+
+const thinkQuestions = {
+  novel: [
+    "What does the character want right now?",
+    "What are they avoiding?",
+    "What happens if nothing changes?"
+  ],
+  poetry: [
+    "What emotion drives this poem?",
+    "What image keeps returning?",
+    "Where should the poem breathe?"
+  ],
+  film: [
+    "What is the power shift in this scene?",
+    "What does each character want?",
+    "What changes by the end?"
+  ],
+  game: [
+    "What choice is the player being pushed toward?",
+    "What happens if they refuse?",
+    "How does this affect the world?"
+  ],
+  notes: [
+    "What idea feels unfinished?",
+    "What question keeps returning?",
+    "What are you not ready to write yet?"
+  ]
+};
+
+function renderThinkPanel(mode) {
+  thinkContent.innerHTML = "";
+
+  thinkQuestions[mode].forEach(q => {
+    const label = document.createElement("label");
+    label.textContent = q;
+
+    const textarea = document.createElement("textarea");
+
+    thinkContent.appendChild(label);
+    thinkContent.appendChild(textarea);
+  });
+}
+
+const genrePanel = document.getElementById('genrePanel');
+const genreList = document.getElementById('genreList');
+
+function toggleGenre() {
+  renderGenres();
+  genrePanel.classList.toggle('open');
+}
+
+const genreRhythms = {
+  "Literary Fiction": [
+    {
+      title: "Observation → Internal Tension → Quiet Realization",
+      content: `
+<p><strong>How this structure works:</strong></p>
+
+<p>
+This is one of the most common and powerful rhythms in literary fiction because it mirrors how real consciousness operates.
+The scene begins with an outward observation. Something small, ordinary, or seemingly insignificant. A gesture, a sound, a detail in the environment.
+The observation itself is not dramatic. What matters is how it presses against the character’s inner life.
+</p>
+
+<p>
+As the scene unfolds, that observation creates internal tension. The character notices something that conflicts with what they believe, want, or fear.
+This tension is often unspoken. Nothing explodes. No one confronts anyone.
+Instead, the pressure builds quietly through thought, memory, bodily reaction, or avoidance.
+</p>
+
+<p>
+The realization at the end is subtle but irreversible.
+The character understands something they cannot unsee.
+This realization does not have to change their behavior immediately.
+What matters is that it changes how the world feels to them.
+</p>
+
+<p>
+This structure works especially well for stories about identity, regret, grief, loneliness, or moral uncertainty.
+It respects the reader’s intelligence by allowing meaning to surface without explanation.
+</p>
+
+<p><strong>Example (mini):</strong></p>
+
+<p>
+A woman watches her father struggle to open a jar.
+She remembers him lifting her onto his shoulders as a child.
+She says nothing, but later realizes she has already started grieving him.
+</p>
+
+<hr>
+
+<p><strong>Guiding Questions:</strong></p>
+<ul>
+  <li>What small detail begins the scene?</li>
+  <li>Why does this detail disturb the character internally?</li>
+  <li>What truth becomes impossible to ignore by the end?</li>
+  <li>What changes emotionally, even if nothing changes outwardly?</li>
+</ul>
+`
+    },
+
+    {
+  title: "Memory Intrusion → Present Action → Emotional Shift",
+  content: `
+<p><strong>How this structure works:</strong></p>
+
+<p>
+This rhythm reflects how memory behaves in real human experience.
+In literary fiction, memory is not background information. It is an active force that interrupts the present.
+The scene begins in motion. A character is doing something ordinary: walking, eating, waiting, speaking.
+Then a memory intrudes without permission.
+</p>
+
+<p>
+The memory is not random. It is triggered by something sensory or emotional in the present.
+A smell, a phrase, a posture, a silence.
+The key is that the memory does not pause the story. It collides with it.
+Past and present exist simultaneously for a moment, creating emotional dissonance.
+</p>
+
+<p>
+The power of this structure comes from contrast.
+Who the character was then versus who they are now.
+What they believed then versus what they understand now.
+The present action continues, but it is no longer innocent.
+It carries the weight of what has been remembered.
+</p>
+
+<p>
+By the end of the scene, the character has shifted emotionally.
+They may not act differently yet.
+They may not even fully acknowledge the change.
+But something inside them has been recontextualized.
+The past has reasserted itself, and the present can no longer be experienced the same way.
+</p>
+
+<p>
+This structure is especially effective for stories dealing with grief, trauma, unresolved relationships, nostalgia, or quiet regret.
+It allows depth without exposition and intimacy without confession.
+</p>
+
+<p><strong>Example (mini):</strong></p>
+
+<p>
+A man washes dishes while his partner talks about the future.
+The sound of water reminds him of a hospital sink.
+He remembers signing a consent form he didn’t understand.
+He keeps washing, but realizes he has already decided to leave.
+</p>
+
+<hr>
+
+<p><strong>Guiding Questions:</strong></p>
+<ul>
+  <li>What present action anchors the scene?</li>
+  <li>What triggers the memory, and why now?</li>
+  <li>How does the memory conflict with the present moment?</li>
+  <li>What emotional truth emerges by the end?</li>
+  <li>How does the past quietly alter the character’s future?</li>
+</ul>
+`
+},
+
+    {
+  title: "External Stillness → Internal Escalation → Unspoken Decision",
+  content: `
+<p><strong>How this structure works:</strong></p>
+
+<p>
+This rhythm thrives on restraint.
+Nothing visibly dramatic happens on the surface of the scene.
+The environment is calm. The interaction is polite. The moment feels ordinary.
+But internally, the character is spiraling.
+</p>
+
+<p>
+The key principle here is contrast.
+The world does not reflect the character’s internal state.
+There are no arguments, no confrontations, no explicit crises.
+Instead, tension accumulates through thoughts, micro-reactions, and emotional suppression.
+</p>
+
+<p>
+As the scene progresses, the character internally revisits doubts, resentments, fears, or realizations they have been avoiding.
+Each internal beat sharpens the pressure.
+The reader senses something is reaching a breaking point, even though nothing breaks outwardly.
+</p>
+
+<p>
+The scene ends not with action, but with decision.
+An unspoken choice.
+A quiet resolve.
+The character does not announce it.
+They may not even fully articulate it.
+But internally, the decision is made, and the story has permanently shifted direction.
+</p>
+
+<p>
+This structure is powerful in literary fiction because it mirrors real human behavior.
+Life-changing decisions are rarely loud.
+They often occur while sitting across from someone, nodding, smiling, and agreeing.
+</p>
+
+<p><strong>Example (mini):</strong></p>
+
+<p>
+A woman listens to her boss praise her reliability.
+She smiles, thanks him, accepts another responsibility.
+Inside, she realizes she will never be seen differently here.
+She goes back to her desk knowing she will resign within the year.
+</p>
+
+<hr>
+
+<p><strong>Guiding Questions:</strong></p>
+<ul>
+  <li>What remains outwardly calm in this scene?</li>
+  <li>What internal thoughts keep intensifying?</li>
+  <li>What emotion is being actively suppressed?</li>
+  <li>What realization becomes unavoidable?</li>
+  <li>What silent decision closes the scene?</li>
+</ul>
+`
+},
+  ],
+  "Fantasy": [
+  {
+    title: "World Detail → Disruption → Choice",
+    content: `
+<p><strong>How this structure works:</strong></p>
+
+<p>
+Fantasy stories earn their power through immersion. This structure begins by grounding the reader in the world itself.
+Not exposition, but lived detail. The way the air smells near a dragon’s pass. The ritual rhythm of a market. The quiet fear
+everyone shares but never names. These details establish normalcy and belief.
+</p>
+
+<p>
+Then comes disruption.
+Something breaks the assumed order of the world. A rule is violated. A creature appears where it should not exist.
+Magic behaves incorrectly. A message arrives that should be impossible. This disruption is not just spectacle.
+It threatens meaning. It forces the character to confront the fact that the world they understand is incomplete or false.
+</p>
+
+<p>
+The heart of the scene is choice.
+Fantasy is not about what happens, but what someone does when the world demands a response.
+The character must act with limited information, cultural pressure, fear, or belief weighing against them.
+Refusal is also a choice, but it carries cost.
+</p>
+
+<p>
+This structure works because it connects worldbuilding directly to character agency.
+The world does not exist to be admired. It exists to be challenged.
+</p>
+
+<p><strong>Example (mini):</strong></p>
+
+<p>
+A young courier rides familiar forest paths delivering charms.
+He notices birds fleeing in silence.
+The trees bend inward.
+When a forbidden sigil burns itself into the road, he chooses whether to turn back or warn the city,
+knowing messengers who speak of such signs are never believed twice.
+</p>
+
+<hr>
+
+<p><strong>Guiding Questions:</strong></p>
+<ul>
+  <li>What detail makes the world feel lived-in at the start?</li>
+  <li>What breaks the rules of this world?</li>
+  <li>Why can the character not ignore this disruption?</li>
+  <li>What choice defines who they are becoming?</li>
+  <li>What is lost no matter what they choose?</li>
+</ul>
+`
+  },
+
+  {
+  title: "Lore Hint → Character Doubt → Consequence",
+  content: `
+<p><strong>How this structure works:</strong></p>
+
+<p>
+Fantasy worlds often carry deep histories, myths, prophecies, and half-forgotten truths.
+This structure uses lore not as explanation, but as pressure.
+The scene begins with a hint of lore. A story overheard. A symbol carved into stone.
+A warning spoken casually by someone who does not fully understand it.
+</p>
+
+<p>
+The key is that the lore is incomplete.
+It raises questions instead of answering them.
+The character does not know whether the lore is true, exaggerated, or dangerous to believe.
+This uncertainty creates doubt.
+</p>
+
+<p>
+The middle of the scene focuses on the character’s internal struggle.
+Believing the lore may require them to challenge authority, tradition, or their own identity.
+Disbelieving it may be safer, socially acceptable, or emotionally easier.
+Fantasy becomes powerful here because belief itself is risky.
+</p>
+
+<p>
+The scene ends with consequence.
+Not necessarily catastrophe, but outcome.
+The character acts—or refuses to act—and the world responds.
+Magic reacts. People react. Fate shifts slightly.
+The cost may not be immediate, but it is now inevitable.
+</p>
+
+<p>
+This structure works especially well for prophecy stories, forbidden magic, lost civilizations,
+and characters who stand between tradition and change.
+</p>
+
+<p><strong>Example (mini):</strong></p>
+
+<p>
+A temple acolyte discovers a footnote in an old hymn describing a forgotten god.
+The verses contradict everything she has been taught.
+She considers reporting it, then hides the page instead.
+That night, the bells ring without wind for the first time in centuries.
+</p>
+
+<hr>
+
+<p><strong>Guiding Questions:</strong></p>
+<ul>
+  <li>What piece of lore intrudes into the scene?</li>
+  <li>Why is this knowledge incomplete or unreliable?</li>
+  <li>What doubt does it create inside the character?</li>
+  <li>What belief is being challenged?</li>
+  <li>What consequence follows the character’s response?</li>
+</ul>
+`
+},
+
+  {
+  title: "Magic/System Use → Cost → Aftermath",
+  content: `
+<p><strong>How this structure works:</strong></p>
+
+<p>
+Fantasy magic systems are not powerful because they are impressive.
+They are powerful because they demand payment.
+This structure focuses on the moment a character uses magic, authority, or a supernatural system,
+and explores what it takes from them in return.
+</p>
+
+<p>
+The scene begins with intentional use.
+The character chooses to invoke magic, activate a system, or rely on an unnatural force.
+This choice is rarely casual.
+It often comes at a moment of pressure, desperation, or moral compromise.
+The reader should understand why the character feels this is necessary.
+</p>
+
+<p>
+Then comes the cost.
+The cost is not always physical.
+It may be emotional, relational, spiritual, or ethical.
+Something is lost, damaged, or changed in a way that cannot be reversed.
+The more structured and rule-bound the magic system is, the more meaningful this cost becomes.
+</p>
+
+<p>
+The aftermath is where fantasy gains weight.
+The spell may succeed, but the world does not reset.
+Relationships shift.
+Trust erodes.
+Fear grows.
+The character is forced to live in the echo of what they have done.
+</p>
+
+<p>
+This structure is especially effective for stories about forbidden magic,
+power corruption, sacrifice, and the slow erosion of innocence.
+It reminds the reader that power always leaves residue.
+</p>
+
+<p><strong>Example (mini):</strong></p>
+
+<p>
+A healer uses blood magic to save a dying child.
+The wound closes.
+The child lives.
+Later, the healer realizes she can no longer feel pain, nor joy.
+When the mother thanks her, she cannot bring herself to answer.
+</p>
+
+<hr>
+
+<p><strong>Guiding Questions:</strong></p>
+<ul>
+  <li>Why does the character choose to use magic now?</li>
+  <li>What rule or boundary is being crossed?</li>
+  <li>What is taken in exchange for this power?</li>
+  <li>Who or what is affected by the cost?</li>
+  <li>How does the aftermath change future choices?</li>
+</ul>
+`
+}
+],
+  "Science Fiction": [
+  {
+    title: "Concept Reveal → Human Reaction → Ethical Tension",
+    content: `
+<p><strong>How this structure works:</strong></p>
+
+<p>
+Science fiction is not about technology.
+It is about what happens to humans when reality changes.
+This structure begins with a concept reveal.
+A scientific breakthrough, alien truth, simulated reality, altered biology, or new law of the universe.
+The reveal should feel disruptive but plausible within the story’s logic.
+</p>
+
+<p>
+What matters is not scale, but implication.
+The concept may affect one person or all of civilization.
+The key is that it forces a redefinition of what was previously assumed to be true.
+</p>
+
+<p>
+The second phase focuses on human reaction.
+Fear, denial, fascination, exploitation, wonder, or quiet acceptance.
+Different characters may respond differently.
+These reactions ground the concept emotionally and socially.
+Without this step, science fiction becomes abstract instead of intimate.
+</p>
+
+<p>
+The scene then sharpens into ethical tension.
+Once the concept exists, someone must decide how it should be used, hidden, shared, or controlled.
+There is no clean answer.
+Every option carries moral weight and unintended consequences.
+</p>
+
+<p>
+This structure works especially well for stories about artificial intelligence,
+time manipulation, surveillance, genetic engineering, first contact,
+and systems that reshape identity or freedom.
+</p>
+
+<p><strong>Example (mini):</strong></p>
+
+<p>
+A researcher proves consciousness can be copied without loss.
+Her team celebrates.
+A volunteer asks whether the copy has legal rights.
+Silence spreads through the room as they realize someone must decide which version is human.
+</p>
+
+<hr>
+
+<p><strong>Guiding Questions:</strong></p>
+<ul>
+  <li>What scientific or conceptual truth is revealed?</li>
+  <li>Why does this change how reality is understood?</li>
+  <li>How do different humans react emotionally?</li>
+  <li>What ethical question emerges immediately?</li>
+  <li>Who benefits and who is put at risk?</li>
+</ul>
+`
+  },
+
+  {
+  title: "Tech Interaction → Unexpected Outcome → Reassessment",
+  content: `
+<p><strong>How this structure works:</strong></p>
+
+<p>
+This structure focuses on interaction rather than invention.
+The technology already exists in the world.
+It may be common, regulated, experimental, or taken for granted.
+The scene begins when a character actively uses, tests, or relies on this technology.
+</p>
+
+<p>
+The key is intention.
+The character believes they understand what the technology does.
+They are using it for a clear, often practical purpose.
+Efficiency, safety, advantage, curiosity, or convenience.
+Science fiction becomes powerful when this confidence is challenged.
+</p>
+
+<p>
+The unexpected outcome follows.
+The technology behaves in a way that was not predicted, disclosed, or fully understood.
+This is not necessarily a malfunction.
+Often, it is the system working exactly as designed,
+revealing a consequence no one accounted for.
+</p>
+
+<p>
+The final phase is reassessment.
+The character must reevaluate their trust in the system,
+their own assumptions, or the institution behind the technology.
+What once felt neutral or beneficial now carries risk.
+</p>
+
+<p>
+This structure is especially effective for stories about surveillance systems,
+algorithms, automated justice, predictive tech, social credit systems,
+medical enhancements, and machine decision-making.
+</p>
+
+<p><strong>Example (mini):</strong></p>
+
+<p>
+A man uses a government app to find the safest route home.
+The path avoids crime, accidents, and unrest.
+Later, he realizes the route passes only through districts marked for demolition.
+The system did not protect him.
+It categorized him.
+</p>
+
+<hr>
+
+<p><strong>Guiding Questions:</strong></p>
+<ul>
+  <li>What technology is being used?</li>
+  <li>Why does the character trust it?</li>
+  <li>What outcome was not anticipated?</li>
+  <li>What assumption is shattered?</li>
+  <li>How does this change future behavior?</li>
+</ul>
+`
+},
+  {
+  title: "Discovery → Misuse → Fallout",
+  content: `
+<p><strong>How this structure works:</strong></p>
+
+<p>
+This structure centers on the danger of knowledge itself.
+The scene begins with discovery.
+Something new is uncovered: a signal, a material, a lifeform,
+a loophole in physics, or a hidden capability within an existing system.
+The discovery feels neutral at first, even wondrous.
+</p>
+
+<p>
+The problem is not the discovery.
+It is how it is used.
+Misuse may be intentional, careless, institutional, or ideological.
+Often, the people exploiting the discovery believe they are acting rationally
+or even morally.
+Science fiction excels at showing how good intentions scale into harm.
+</p>
+
+<p>
+The fallout is the unavoidable consequence.
+Once knowledge exists, it cannot be unlearned.
+Systems adapt.
+Power consolidates.
+People suffer in ways that were not predicted.
+The fallout may be immediate or delayed, but it reshapes the world permanently.
+</p>
+
+<p>
+This structure works especially well for stories about weaponized research,
+corporate science, first contact failures, environmental collapse,
+and technologies released faster than ethics can follow.
+</p>
+
+<p>
+What gives this structure weight is inevitability.
+The tragedy is not that someone made the wrong choice,
+but that the system rewarded the choice that caused the most damage.
+</p>
+
+<p><strong>Example (mini):</strong></p>
+
+<p>
+Scientists discover a way to extract infinite energy from a dying star.
+Governments race to claim it.
+Within years, stars begin collapsing across monitored sectors.
+The universe does not protest.
+It simply recalculates.
+</p>
+
+<hr>
+
+<p><strong>Guiding Questions:</strong></p>
+<ul>
+  <li>What discovery changes the rules?</li>
+  <li>Who controls or exploits it?</li>
+  <li>Why does misuse feel justified?</li>
+  <li>What fallout cannot be undone?</li>
+  <li>Who lives with the consequences?</li>
+</ul>
+`
+}
+],
+
+  "Thriller": [
+  {
+    title: "Unease → Threat Proximity → Decision",
+    content: `
+<p><strong>How this structure works:</strong></p>
+
+<p>
+Thrillers operate on tension before action.
+This structure begins with unease.
+Something is wrong, but not provably wrong.
+A pattern feels off.
+A routine is interrupted.
+Information does not align.
+The character senses danger before they can justify it.
+</p>
+
+<p>
+Unease is effective because it invites the reader into anticipation.
+The threat is not visible yet.
+It exists in gaps, silences, delays, and absences.
+The scene should encourage vigilance, not panic.
+</p>
+
+<p>
+The second phase brings threat proximity.
+The danger moves closer, spatially or psychologically.
+A stranger appears twice.
+A door that should be locked is open.
+A call cuts off mid-sentence.
+The threat may still be unseen, but it is now undeniable.
+</p>
+
+<p>
+The scene ends with decision.
+The character must act with incomplete information.
+Waiting is dangerous.
+Acting may be worse.
+Thrillers gain power when choices are made under pressure,
+without certainty or safety.
+</p>
+
+<p>
+This structure works especially well for investigative thrillers,
+psychological thrillers, survival stories, and cat-and-mouse narratives.
+It trains the reader to read ahead, scanning for danger.
+</p>
+
+<p><strong>Example (mini):</strong></p>
+
+<p>
+A woman notices the same car idling near her apartment three nights in a row.
+On the fourth night, the car is gone.
+Her phone buzzes with a message from an unknown number:
+“I think you dropped something.”
+She decides whether to go home or keep walking.
+</p>
+
+<hr>
+
+<p><strong>Guiding Questions:</strong></p>
+<ul>
+  <li>What creates the first sense of unease?</li>
+  <li>Why can’t the character dismiss it?</li>
+  <li>How does the threat move closer?</li>
+  <li>What information is still missing?</li>
+  <li>What decision must be made under pressure?</li>
+</ul>
+`
+  },
+
+  {
+  title: "Information Gain → Danger Escalation → Escape or Trap",
+  content: `
+<p><strong>How this structure works:</strong></p>
+
+<p>
+This structure is built around revelation.
+The scene begins when the character gains information.
+A document is uncovered.
+A conversation reveals too much.
+A pattern finally makes sense.
+The knowledge feels empowering at first.
+Understanding creates the illusion of control.
+</p>
+
+<p>
+That illusion collapses quickly.
+The information increases danger instead of reducing it.
+Someone else realizes the character knows too much.
+A system flags their access.
+A hidden threat activates in response.
+Knowledge becomes exposure.
+</p>
+
+<p>
+The scene escalates as pressure rises.
+The character is now visible, targeted, or compromised.
+They must react quickly while processing the new information.
+The danger intensifies because they are no longer ignorant.
+</p>
+
+<p>
+The scene ends in escape or trap.
+Either the character barely gets away,
+or they think they have escaped only to realize they have not.
+Thrillers thrive on false safety.
+Survival is temporary.
+</p>
+
+<p>
+This structure works especially well for conspiracy thrillers,
+espionage, investigative narratives, and stories about surveillance and power.
+</p>
+
+<p><strong>Example (mini):</strong></p>
+
+<p>
+A journalist decrypts a leaked file proving a cover-up.
+As she copies it, her screen freezes.
+A message appears: “Transfer complete.”
+Her office lights go out.
+She reaches for the fire stairs, unsure whether the exit is still hers.
+</p>
+
+<hr>
+
+<p><strong>Guiding Questions:</strong></p>
+<ul>
+  <li>What crucial information is discovered?</li>
+  <li>Why does it feel empowering at first?</li>
+  <li>How does this knowledge increase danger?</li>
+  <li>Who or what responds to the discovery?</li>
+  <li>Is the escape real or an illusion?</li>
+</ul>
+`
+},
+
+  {
+  title: "Pressure Clock → Complication → Narrow Survival",
+  content: `
+<p><strong>How this structure works:</strong></p>
+
+<p>
+This structure is built on time pressure.
+A clock is introduced.
+It may be literal (a countdown, a deadline, a closing window)
+or implied (battery life, oxygen supply, distance, pursuit).
+Once the clock starts, the scene cannot pause.
+</p>
+
+<p>
+The character believes they understand the problem.
+They have a plan.
+Then comes complication.
+Something unexpected interferes.
+A tool fails.
+An ally hesitates.
+New information invalidates the original strategy.
+The clock does not stop for recalculation.
+</p>
+
+<p>
+The scene resolves through narrow survival.
+The character does not win cleanly.
+They make it through by inches, seconds, or luck.
+Often, the escape introduces a new problem,
+ensuring momentum continues into the next scene.
+</p>
+
+<p>
+This structure works especially well for chase sequences,
+bomb scenarios, containment breaches,
+and survival moments where preparation collapses under reality.
+</p>
+
+<p>
+What gives this structure power is breathlessness.
+The reader feels time compress.
+There is no space for reflection.
+Only motion, instinct, and consequence.
+</p>
+
+<p><strong>Example (mini):</strong></p>
+
+<p>
+A security lockdown gives him ninety seconds to exit the building.
+Halfway down the stairwell, smoke floods the floors below.
+His radio crackles: the override code was wrong.
+He chooses whether to go up, down, or break a window and jump.
+</p>
+
+<hr>
+
+<p><strong>Guiding Questions:</strong></p>
+<ul>
+  <li>What clock governs this scene?</li>
+  <li>Why can’t it be paused or extended?</li>
+  <li>What complication disrupts the plan?</li>
+  <li>How close does the character come to failure?</li>
+  <li>What new danger follows survival?</li>
+</ul>
+`
+}
+],
+  "Romance": [
+  {
+    title: "Emotional Distance → Connection Moment → Withdrawal",
+    content: `
+<p><strong>How this structure works:</strong></p>
+
+<p>
+Romance is driven by proximity and resistance.
+This structure begins with emotional distance.
+Two characters occupy the same space, but not the same emotional ground.
+The distance may come from past hurt, social boundaries, pride, fear,
+or an unspoken rule that keeps them apart.
+</p>
+
+<p>
+The key is restraint.
+The attraction or bond exists, but it is controlled, denied, or redirected.
+Small gestures carry weight.
+Glances linger.
+Words mean more than they say.
+Romantic tension thrives in what is not acted upon.
+</p>
+
+<p>
+The connection moment follows.
+Something breaks the emotional barrier, briefly.
+A shared vulnerability.
+A moment of honesty.
+A touch that lingers too long.
+For a short time, the distance collapses.
+The characters feel seen.
+</p>
+
+<p>
+Then comes withdrawal.
+One or both characters pull back.
+The withdrawal is not cruelty.
+It is protection.
+Fear resurfaces.
+Consequences become visible.
+The connection has made the distance more dangerous than before.
+</p>
+
+<p>
+This structure works especially well for slow-burn romance,
+forbidden relationships, and stories where love threatens stability or identity.
+</p>
+
+<p><strong>Example (mini):</strong></p>
+
+<p>
+They work late, alone in the office.
+She admits she never planned to stay in the city.
+He confesses he’s afraid of leaving.
+Their laughter fades into silence.
+She steps back first, reminding him they’re just coworkers.
+</p>
+
+<hr>
+
+<p><strong>Guiding Questions:</strong></p>
+<ul>
+  <li>What creates emotional distance at the start?</li>
+  <li>What is being carefully held back?</li>
+  <li>What allows the moment of connection?</li>
+  <li>Why does withdrawal feel necessary?</li>
+  <li>What does the connection make impossible to ignore?</li>
+</ul>
+`
+  },
+
+  {
+  title: "Desire → Miscommunication → Longing",
+  content: `
+<p><strong>How this structure works:</strong></p>
+
+<p>
+This structure is fueled by want and misunderstanding.
+It begins with desire.
+One or both characters want something they believe they cannot safely have.
+The desire may be romantic, emotional, or rooted in companionship,
+but it is strong enough to shape behavior.
+</p>
+
+<p>
+The desire is rarely expressed directly.
+Instead, it surfaces through tension, hesitation, jealousy,
+overinterpretation, or emotional projection.
+Romance intensifies when characters speak around what they want,
+not directly at it.
+</p>
+
+<p>
+Miscommunication enters naturally.
+A message is misread.
+Silence is mistaken for rejection.
+An action is interpreted through fear rather than truth.
+The tragedy of this structure is that no one is lying.
+They simply do not have the courage, timing, or safety to be clear.
+</p>
+
+<p>
+The scene ends in longing.
+Distance grows instead of closing.
+The characters feel the absence of something that almost happened.
+Longing is powerful because it sustains romantic momentum
+without resolution.
+</p>
+
+<p>
+This structure works especially well for unresolved attraction,
+love triangles, missed chances, and emotionally repressed characters.
+</p>
+
+<p><strong>Example (mini):</strong></p>
+
+<p>
+He texts her that he needs to talk.
+She reads it after seeing him laugh with someone else.
+By the time she replies, he’s already convinced she isn’t interested.
+They both spend the night thinking the other chose differently.
+</p>
+
+<hr>
+
+<p><strong>Guiding Questions:</strong></p>
+<ul>
+  <li>What does the character desire but not express?</li>
+  <li>Why does speaking honestly feel risky?</li>
+  <li>What misunderstanding occurs?</li>
+  <li>How does fear shape interpretation?</li>
+  <li>What longing carries into the next scene?</li>
+</ul>
+`
+},
+
+  {
+  title: "Intimacy → Fear → Emotional Consequence",
+  content: `
+<p><strong>How this structure works:</strong></p>
+
+<p>
+This structure centers on vulnerability.
+The scene begins with intimacy.
+Not necessarily physical.
+Emotional openness, trust, confession, or shared truth.
+Something is revealed that cannot be taken back.
+</p>
+
+<p>
+Intimacy creates exposure.
+Once someone is truly seen, they are at risk.
+Fear follows naturally.
+Fear of loss.
+Fear of rejection.
+Fear of repeating past pain.
+The closer the connection, the more dangerous it feels.
+</p>
+
+<p>
+The fear drives action or withdrawal.
+A character pulls away, lashes out, deflects, or sabotages the connection.
+This reaction is often unfair, but emotionally honest.
+Romance thrives when fear is understandable, not villainized.
+</p>
+
+<p>
+The scene ends with emotional consequence.
+Something breaks, shifts, or deepens.
+Trust is damaged or redefined.
+The relationship cannot return to its previous state.
+Even reconciliation will now carry scars.
+</p>
+
+<p>
+This structure works especially well for turning points,
+confessions, betrayals, and moments that permanently alter relationships.
+</p>
+
+<p><strong>Example (mini):</strong></p>
+
+<p>
+She tells him she loves him first.
+He doesn’t say it back.
+Not because he doesn’t feel it,
+but because saying it would mean admitting how much he could lose.
+The silence stays with both of them.
+</p>
+
+<hr>
+
+<p><strong>Guiding Questions:</strong></p>
+<ul>
+  <li>What form of intimacy opens the scene?</li>
+  <li>What fear does this intimacy awaken?</li>
+  <li>How does fear shape the character’s response?</li>
+  <li>What emotional damage or shift occurs?</li>
+  <li>What can no longer be undone?</li>
+</ul>
+`
+}
+],
+  "Horror": [
+  {
+    title: "Normalcy → Wrong Detail → Dread",
+    content: `
+<p><strong>How this structure works:</strong></p>
+
+<p>
+Horror begins by earning trust.
+This structure opens in normalcy.
+The world feels stable, familiar, and emotionally safe.
+Daily routines continue.
+Nothing announces danger.
+This calm is essential, because horror relies on contrast.
+</p>
+
+<p>
+Then something is wrong.
+Not loud. Not violent.
+A detail does not fit.
+A sound repeats when it shouldn’t.
+A reflection lingers too long.
+A rule of reality bends slightly.
+The wrongness is subtle enough to be doubted.
+</p>
+
+<p>
+The key is restraint.
+The character notices the detail but questions themselves.
+Rational explanations compete with instinct.
+Horror grows when the mind refuses to accept what the body already knows.
+</p>
+
+<p>
+The scene ends in dread.
+Not panic.
+Dread is sustained awareness.
+The character understands that something is present, watching, or inevitable,
+even if it cannot yet be confronted.
+The threat is not revealed.
+It is felt.
+</p>
+
+<p>
+This structure works especially well for psychological horror,
+slow-burn supernatural stories, and uncanny domestic horror.
+It teaches the reader how to be afraid.
+</p>
+
+<p><strong>Example (mini):</strong></p>
+
+<p>
+Every night, she locks the door before bed.
+One night, she finds it unlocked in the morning.
+No sign of entry.
+No missing items.
+That night, she locks it again and stays awake,
+listening for footsteps that never arrive.
+</p>
+
+<hr>
+
+<p><strong>Guiding Questions:</strong></p>
+<ul>
+  <li>What establishes safety at the start?</li>
+  <li>What detail feels wrong, not dangerous?</li>
+  <li>Why does the character doubt themselves?</li>
+  <li>What realization creates dread?</li>
+  <li>What remains unseen but undeniable?</li>
+</ul>
+`
+  },
+
+  {
+  title: "Isolation → Sensory Unease → Realization",
+  content: `
+<p><strong>How this structure works:</strong></p>
+
+<p>
+This structure uses separation to weaken certainty.
+Isolation may be physical, emotional, or social.
+The character is cut off from help, validation, or shared reality.
+Even when others are present, they are unreachable or dismissive.
+</p>
+
+<p>
+Once isolated, the senses become unreliable.
+Sounds feel too close or too distant.
+Smells linger without source.
+Textures feel wrong.
+Light behaves strangely.
+The body reacts before the mind understands.
+Sensory unease destabilizes the character’s trust in their own perception.
+</p>
+
+<p>
+The unease escalates slowly.
+Nothing attacks.
+Nothing explains itself.
+The character begins to question whether the environment is hostile,
+or whether they themselves are changing.
+Horror thrives in this ambiguity.
+</p>
+
+<p>
+The scene ends in realization.
+Not revelation, but recognition.
+The character understands that the isolation is intentional.
+Something wants them alone.
+Or worse, something has already claimed them.
+</p>
+
+<p>
+This structure works especially well for haunted spaces,
+cosmic horror, psychological descent, and stories where the threat is impersonal
+and indifferent to human fear.
+</p>
+
+<p><strong>Example (mini):</strong></p>
+
+<p>
+A man hears knocking only when the house is silent.
+When music plays, it stops.
+When he calls friends, the calls fail.
+By the third night, he realizes the sound isn’t coming from outside,
+but from inside the walls, following him room to room.
+</p>
+
+<hr>
+
+<p><strong>Guiding Questions:</strong></p>
+<ul>
+  <li>How is the character isolated?</li>
+  <li>Which senses become unreliable first?</li>
+  <li>What detail resists rational explanation?</li>
+  <li>What does the realization imply?</li>
+  <li>Why can’t the character escape or be helped?</li>
+</ul>
+`
+},
+
+  {
+  title: "Threat Hint → Helplessness → Psychological Fracture",
+  content: `
+<p><strong>How this structure works:</strong></p>
+
+<p>
+This structure focuses on erosion rather than surprise.
+The scene begins with a hint of threat.
+Not a full reveal.
+A shadow where no body should be.
+A rule spoken in warning.
+A pattern that suggests intent.
+The threat is suggested, not shown.
+</p>
+
+<p>
+The character attempts control.
+They rationalize, prepare, barricade, pray, follow rules.
+None of it works.
+Helplessness emerges when every response fails.
+The horror is not that the threat is powerful,
+but that resistance has no effect.
+</p>
+
+<p>
+As helplessness deepens, the mind fractures.
+Logic collapses.
+The character’s thoughts loop, distort, or splinter.
+They may dissociate, obey irrational rules, or accept the impossible.
+This fracture is the true climax of the scene.
+</p>
+
+<p>
+The scene ends not with death, but with transformation.
+The character is no longer who they were.
+Fear has rewritten their internal reality.
+Even survival is a form of loss.
+</p>
+
+<p>
+This structure works especially well for existential horror,
+cosmic dread, possession narratives, and stories where the threat
+cannot be fought—only endured.
+</p>
+
+<p><strong>Example (mini):</strong></p>
+
+<p>
+The voice tells her not to look at the ceiling.
+She obeys.
+Each night, the rule changes.
+Eventually, she realizes the rules are not protection,
+but training.
+By the time she understands, she no longer remembers
+what it felt like to disobey.
+</p>
+
+<hr>
+
+<p><strong>Guiding Questions:</strong></p>
+<ul>
+  <li>How is the threat hinted, not revealed?</li>
+  <li>What attempts at control fail?</li>
+  <li>Where does helplessness take root?</li>
+  <li>How does the mind begin to fracture?</li>
+  <li>Who is the character after this scene?</li>
+</ul>
+`
+}
+],
+};
+
+function renderGenres() {
+  genreList.innerHTML = "";
+
+  Object.entries(genreRhythms).forEach(([genre, rhythms]) => {
+    const block = document.createElement("div");
+    block.className = "genre-item";
+
+    const title = document.createElement("h4");
+    title.textContent = genre;
+
+    const list = document.createElement("ul");
+
+    rhythms.forEach(structure => {
+  const btn = document.createElement("button");
+  btn.textContent = structure.title;
+  btn.style.display = "block";
+  btn.style.width = "100%";
+  btn.style.margin = "8px 0";
+  btn.style.padding = "10px";
+  btn.style.borderRadius = "10px";
+  btn.style.border = "1px solid #ddd";
+  btn.style.background = "#fff";
+  btn.style.cursor = "pointer";
+  btn.style.textAlign = "left";
+
+  btn.onclick = () => {
+    showStructure(structure);
+  };
+
+  list.appendChild(btn);
+});
+
+    block.appendChild(title);
+    block.appendChild(list);
+    genreList.appendChild(block);
+  });
+}
+
+const structureViewer = document.getElementById("structureViewer");
+
+function showStructure(structure) {
+  structureViewer.innerHTML = `
+    <div style="
+      margin-top:20px;
+      padding:16px;
+      border-radius:14px;
+      background:rgba(124,92,255,0.08);
+      font-size:0.85rem;
+      line-height:1.6;
+    ">
+      <h4 style="margin-top:0;">${structure.title}</h4>
+      ${structure.content}
+    </div>
+  `;
+}
+  </script>
+
+</body>
+</html>

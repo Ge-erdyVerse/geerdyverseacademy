@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Geerdyverse Academy — Learn Creativity</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --void-black: #0b0710;
+      --nebula-purple: #221324;
+      --paper-light: #fffef8;
+
+      --accent-violet: #7c5cff;
+      --accent-rose: #ff7ac4;
+
+      --text-dark: #2b163a;
+      --text-muted: #6e5b7b;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(180deg, var(--void-black), var(--nebula-purple));
+      color: var(--paper-light);
+    }
+
+    .stars {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image:
+        radial-gradient(2px 2px at 15% 25%, rgba(255,255,255,0.7), transparent),
+        radial-gradient(1px 1px at 60% 70%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1.5px 1.5px at 85% 40%, rgba(255,255,255,0.6), transparent);
+      background-size: 240px 240px;
+      animation: drift 120s linear infinite;
+    }
+
+    @keyframes drift {
+      from { transform: translateY(0); }
+      to { transform: translateY(-350px); }
+    }
+
+    body > * { position: relative; z-index: 1; }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      background: rgba(11, 7, 16, 0.85);
+      backdrop-filter: blur(10px);
+      z-index: 10;
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: auto;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 1.2rem;
+    }
+
+    .nav a {
+      color: var(--paper-light);
+      text-decoration: none;
+      margin-left: 20px;
+      font-size: 0.9rem;
+    }
+
+    .academy-hero {
+      text-align: center;
+      padding: 100px 20px 60px;
+    }
+
+    .academy-hero h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2.4rem;
+      margin-bottom: 16px;
+    }
+
+    .academy-hero p {
+      max-width: 650px;
+      margin: auto;
+      color: #ddd;
+    }
+
+    .back-wrap {
+      text-align: center;
+      margin-top: 14px;
+    }
+
+    .back-btn {
+      display: inline-block;
+      padding: 8px 18px;
+      border-radius: 20px;
+      border: 1px solid var(--accent-violet);
+      color: var(--paper-light);
+      text-decoration: none;
+      font-size: 0.8rem;
+    }
+
+    .back-btn:hover {
+      background: rgba(124, 92, 255, 0.15);
+    }
+
+    .panel {
+      background: var(--paper-light);
+      color: var(--text-dark);
+      max-width: 900px;
+      margin: 60px auto;
+      padding: 50px;
+      border-radius: 18px;
+      text-align: center;
+    }
+
+    .panel h2 {
+      font-family: 'Poppins', sans-serif;
+      margin-top: 0;
+    }
+
+    .reference {
+      max-width: 1100px;
+      margin: 80px auto;
+      padding: 0 20px;
+    }
+
+    .reference h2 {
+      text-align: center;
+      font-family: 'Poppins', sans-serif;
+      margin-bottom: 12px;
+    }
+
+    .reference p {
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto 40px;
+      color: #ddd;
+    }
+
+    .reference-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+
+    .reference-card {
+      background: rgba(255, 250, 244, 0.96);
+      color: var(--text-dark);
+      padding: 28px;
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .reference-tag {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .reference-card h3 {
+      font-family: 'Poppins', sans-serif;
+      margin-top: 0;
+      font-size: 1.1rem;
+    }
+
+    .reference-card p {
+      font-size: 0.9rem;
+      margin: 12px 0 20px;
+    }
+
+    .reference-card a {
+      align-self: flex-start;
+      padding: 8px 18px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, var(--accent-violet), var(--accent-rose));
+      color: white;
+      text-decoration: none;
+      font-size: 0.8rem;
+    }
+
+    .galaxies {
+      max-width: 1100px;
+      margin: 80px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 30px;
+    }
+
+    .galaxy {
+      background: rgba(255, 250, 244, 0.96);
+      color: var(--text-dark);
+      padding: 30px;
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .galaxy h3 {
+      font-family: 'Poppins', sans-serif;
+      margin-top: 0;
+    }
+
+    .status {
+      font-size: 0.75rem;
+      margin-top: 10px;
+      color: var(--text-muted);
+    }
+
+    .enter {
+      margin-top: 20px;
+      align-self: flex-start;
+      padding: 8px 18px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, var(--accent-violet), var(--accent-rose));
+      color: white;
+      font-size: 0.8rem;
+      text-decoration: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 50px 20px;
+      font-size: 0.8rem;
+      color: #aaa;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="stars"></div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="logo">Geerdyverse</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="academy.html">Academy</a>
+      <a href="#">Tools</a>
+      <a href="#">About</a>
+    </nav>
+  </div>
+</header>
+
+<section class="academy-hero">
+  <h1>The Geerdyverse Academy</h1>
+  <p>
+    Learn creativity as a craft — through systems,
+    questions, and guided practice.
+  </p>
+
+  <div class="back-wrap">
+    <a href="index.html" class="back-btn">⬅ Back to Home</a>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>How Learning Works Here</h2>
+  <p>
+    The Geerdyverse Academy does not teach creativity through motivation
+    or surface-level theory. Each discipline is broken into practical
+    systems, guided questions, and tools that help you think like a creator.
+  </p>
+</section>
+
+<section class="reference">
+  <h2>Reference Analysis</h2>
+  <p>
+    Short essays breaking down why certain films, games,
+    and novels work — not through opinion,
+    but through structure, decisions, and systems.
+  </p>
+
+  <div class="reference-grid">
+
+    <div class="reference-card">
+      <div class="reference-tag">Film Review</div>
+      <h3>Why This Film Works</h3>
+      <p>
+        A focused breakdown of character decisions,
+        structure, and pressure inside a film.
+      </p>
+      <a href="film-review.html">Read Review</a>
+    </div>
+
+    <div class="reference-card">
+      <div class="reference-tag">Game Review</div>
+      <h3>Why This Game Works</h3>
+      <p>
+        Examining how mechanics, player choice,
+        and consequence create meaning.
+      </p>
+      <a href="#">Read Review</a>
+    </div>
+
+    <div class="reference-card">
+      <div class="reference-tag">Book Review</div>
+      <h3>Why This Book Works</h3>
+      <p>
+        A structural look at narrative momentum,
+        character systems, and escalation.
+      </p>
+      <a href="#">Read Review</a>
+    </div>
+
+  </div>
+</section>
+
+<section class="galaxies">
+
+  <div class="galaxy">
+    <h3>✍️ Writing Galaxy</h3>
+    <p>
+      Learn story structure, characters, pacing,
+      and worldbuilding through practical frameworks.
+    </p>
+    <div class="status">Status: Active / Expanding</div>
+    <a href="writing-galaxy.html" class="enter">Enter Galaxy</a>
+  </div>
+
+  <div class="galaxy">
+    <h3>🎬 Film Galaxy</h3>
+    <p>
+      Understand visual storytelling,
+      screenplay logic, and cinematic language.
+    </p>
+    <div class="status">Status: Coming Soon</div>
+    <span class="enter">Preview</span>
+  </div>
+
+  <div class="galaxy">
+    <h3>🎮 Game Galaxy</h3>
+    <p>
+      Explore narrative design,
+      player choice, and interactive storytelling.
+    </p>
+    <div class="status">Status: Concept Phase</div>
+    <span class="enter">Preview</span>
+  </div>
+
+  <div class="galaxy">
+    <h3>🌍 Worldbuilding Galaxy</h3>
+    <p>
+      Build cultures, histories,
+      magic systems, and sci-fi logic.
+    </p>
+    <div class="status">Status: Planned</div>
+    <span class="enter">Preview</span>
+  </div>
+
+</section>
+
+<footer>
+  <p>© 2025 Geerdyverse Academy • Learn. Build. Create.</p>
+</footer>
+
+</body>
+</html>

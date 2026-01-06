@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Geerdyverse — A Universe That Teaches Creativity</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --void-black: #0b0710;
+      --nebula-purple: #221324;
+      --paper-light: #fffef8;
+
+      --accent-violet: #7c5cff;
+      --accent-rose: #ff7ac4;
+
+      --text-dark: #2b163a;
+      --text-muted: #6e5b7b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(180deg, var(--void-black), var(--nebula-purple));
+      color: var(--paper-light);
+      overflow-x: hidden;
+    }
+
+    /* ================================
+       Cosmic Background Stars
+    ================================= */
+
+    .stars {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+
+      background-image:
+        radial-gradient(2px 2px at 10% 20%, rgba(255,255,255,0.85), transparent),
+        radial-gradient(1.5px 1.5px at 30% 70%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 50% 40%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(2px 2px at 70% 80%, rgba(255,255,255,0.7), transparent),
+        radial-gradient(1.5px 1.5px at 90% 30%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 20% 90%, rgba(255,255,255,0.45), transparent);
+
+      background-size: 200px 200px;
+      animation: starDrift 90s linear infinite;
+    }
+
+    .stars::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+
+      background-image:
+        radial-gradient(1px 1px at 15% 25%, rgba(255,255,255,0.35), transparent),
+        radial-gradient(1px 1px at 85% 65%, rgba(255,255,255,0.25), transparent),
+        radial-gradient(1px 1px at 60% 10%, rgba(255,255,255,0.3), transparent);
+
+      background-size: 300px 300px;
+      animation: starDrift 160s linear infinite reverse;
+    }
+
+    @keyframes starDrift {
+      from { transform: translateY(0); }
+      to { transform: translateY(-400px); }
+    }
+
+    body > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ================================
+       Navigation
+    ================================= */
+
+    .nav {
+      position: sticky;
+      top: 0;
+      background: rgba(11, 7, 16, 0.85);
+      backdrop-filter: blur(10px);
+      z-index: 10;
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: auto;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 1.2rem;
+    }
+
+    .nav a {
+      color: var(--paper-light);
+      text-decoration: none;
+      margin-left: 20px;
+      font-size: 0.9rem;
+      transition: opacity 0.2s ease;
+    }
+
+    .nav a:hover {
+      opacity: 0.8;
+    }
+
+    .nav-cta {
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--accent-violet);
+    }
+
+    /* ================================
+       Hero
+    ================================= */
+
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .hero h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2.6rem;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      max-width: 620px;
+      margin: auto;
+      color: #ddd;
+      font-size: 1rem;
+    }
+
+    .hero-buttons {
+      margin-top: 30px;
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Buttons */
+    .btn-primary {
+      padding: 12px 28px;
+      border-radius: 28px;
+      border: none;
+      background: linear-gradient(135deg, var(--accent-violet), var(--accent-rose));
+      color: white;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(124,92,255,0.35);
+    }
+
+    .btn-secondary {
+      padding: 12px 28px;
+      border-radius: 28px;
+      border: 1px solid var(--accent-violet);
+      background: transparent;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(124,92,255,0.15);
+    }
+
+    /* ================================
+       Panel
+    ================================= */
+
+    .panel {
+      background: var(--paper-light);
+      color: var(--text-dark);
+      max-width: 900px;
+      margin: 80px auto;
+      padding: 50px;
+      border-radius: 18px;
+      text-align: center;
+    }
+
+    .panel h2 {
+      font-family: 'Poppins', sans-serif;
+      margin-top: 0;
+    }
+
+    /* ================================
+       Pillars
+    ================================= */
+
+    .pillars {
+      max-width: 1100px;
+      margin: 60px auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 30px;
+      padding: 0 20px;
+    }
+
+    .pillar {
+      background: rgba(255, 250, 244, 0.96);
+      color: var(--text-dark);
+      padding: 30px;
+      border-radius: 16px;
+    }
+
+    .pillar h3 {
+      font-family: 'Poppins', sans-serif;
+      margin-top: 0;
+    }
+
+    /* ================================
+       CTA
+    ================================= */
+
+    .cta {
+      text-align: center;
+      margin: 100px 20px;
+    }
+
+    .cta h2 {
+      font-family: 'Poppins', sans-serif;
+      margin-bottom: 20px;
+    }
+
+    /* ================================
+       Footer
+    ================================= */
+
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      font-size: 0.8rem;
+      color: #aaa;
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .panel {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Background Stars -->
+  <div class="stars"></div>
+
+  <!-- Navigation -->
+  <header class="nav">
+    <div class="nav-inner">
+      <div class="logo">Geerdyverse</div>
+      <nav>
+        <a href="academy.html">Academy</a>
+        <a href="#">Tools</a>
+        <a href="#">About</a>
+        <a href="#" class="nav-cta">Join</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>A Universe That Teaches Creativity</h1>
+      <p>
+        Learn writing, filmmaking, games, and worldbuilding
+        through systems, tools, and imagination — not noise.
+      </p>
+      <div class="hero-buttons">
+        <a href="academy.html" class="btn-primary">Enter the Universe</a>
+        <button class="btn-secondary">Start Learning</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- What is Geerdyverse -->
+  <section class="panel">
+    <h2>What is the Geerdyverse?</h2>
+    <p>
+      Geerdyverse is a creative learning universe designed to teach creators
+      how to build stories, worlds, games, and films — without killing the soul
+      of creativity.
+    </p>
+  </section>
+
+  <!-- Pillars -->
+  <section class="pillars">
+    <div class="pillar">
+      <h3>✍️ Creators First</h3>
+      <p>Tools that assist you, not replace you.</p>
+      <a href="creators-first.html" class="btn-primary" style="margin-top:14px; display:inline-block;">
+        Explore Tools
+      </a>
+    </div>
+
+    <div class="pillar">
+      <h3>🧠 Learn by Doing</h3>
+      <p>Practice creation, not passive consumption.</p>
+    </div>
+    <div class="pillar">
+      <h3>🌍 Connected Arts</h3>
+      <p>Writing, games, film, and worlds all influence each other.</p>
+    </div>
+    <div class="pillar">
+      <h3>🛠 Tools, Not AI Shortcuts</h3>
+      <p>Systems that sharpen human creativity.</p>
+    </div>
+    <div class="pillar">
+      <h3>🌐 Feedback & Translation</h3>
+      <p>
+        Get personal feedback, careful editing, or thoughtful translations
+        that preserve tone, intent, structure, and emotional weight.
+      </p>
+      <a href="feedback-translation.html" class="btn-primary" style="margin-top:14px; display:inline-block;">
+        Enter Service
+      </a>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <h2>This is only the beginning.</h2>
+    <a href="academy.html" class="btn-primary">Explore the Academy</a>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Geerdyverse • A Creative Learning Universe</p>
+  </footer>
+
+</body>
+</html>
