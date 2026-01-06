@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Geerdyverse — The Creative Universe</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #0b0710;
+      color: #fffef8;
+    }
+
+    header {
+      padding: 20px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    h1 {
+      font-family: 'Poppins', sans-serif;
+      margin-bottom: 8px;
+    }
+
+    .sub {
+      color: #cfc3da;
+      font-size: 0.95rem;
+    }
+
+    .placeholder {
+      max-width: 800px;
+      margin: 80px auto;
+      padding: 40px;
+      text-align: center;
+      background: rgba(255,255,255,0.05);
+      border-radius: 16px;
+    }
+
+    /* ================================
+   Cosmic Eye Background
+================================ */
+
+.eye-container {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.eye {
+  position: relative;
+  width: 520px;
+  height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    #1a0f1f 0%,
+    #0b0710 60%,
+    #000 100%
+  );
+  box-shadow:
+    0 0 120px rgba(124,92,255,0.25),
+    inset 0 0 60px rgba(0,0,0,0.8);
+  overflow: hidden;
+  animation: breathe 12s ease-in-out infinite;
+}
+
+/* Iris */
+.iris {
+  position: absolute;
+  inset: 50%;
+  transform: translate(-50%, -50%);
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    #7c5cff 0%,
+    #3a1f55 45%,
+    #140818 70%
+  );
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Black Hole Pupil */
+.blackhole {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    #000 0%,
+    #000 60%,
+    rgba(124,92,255,0.25) 100%
+  );
+  box-shadow:
+    0 0 40px rgba(124,92,255,0.6),
+    inset 0 0 20px rgba(0,0,0,1);
+  animation: pull 6s ease-in-out infinite;
+}
+
+/* Eyelids */
+.eyelid {
+  position: absolute;
+  width: 100%;
+  height: 50%;
+  background: #0b0710;
+  z-index: 5;
+}
+
+.eyelid.top {
+  top: 0;
+  border-bottom-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+  animation: blinkTop 10s infinite;
+}
+
+.eyelid.bottom {
+  bottom: 0;
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
+  animation: blinkBottom 10s infinite;
+}
+
+/* Animations */
+@keyframes blinkTop {
+  0%, 92%, 100% { transform: translateY(-100%); }
+  95% { transform: translateY(0); }
+}
+
+@keyframes blinkBottom {
+  0%, 92%, 100% { transform: translateY(100%); }
+  95% { transform: translateY(0); }
+}
+
+@keyframes pull {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+/* Push content above eye */
+body > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* ================================
+   Swirling Stars / Accretion Disk
+================================ */
+
+.accretion-disk {
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  animation: diskRotate 40s linear infinite;
+  z-index: 1;
+}
+
+.star {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(255,255,255,0.8);
+  animation: spiral 12s linear infinite;
+}
+
+/* Star starting positions */
+.s1 { top: 10%; left: 50%; animation-delay: 0s; }
+.s2 { top: 30%; left: 80%; animation-delay: 2s; }
+.s3 { top: 70%; left: 85%; animation-delay: 4s; }
+.s4 { top: 90%; left: 50%; animation-delay: 6s; }
+.s5 { top: 70%; left: 15%; animation-delay: 8s; }
+.s6 { top: 30%; left: 10%; animation-delay: 10s; }
+
+/* Spiral into black hole */
+@keyframes spiral {
+  0% {
+    transform: rotate(0deg) translateX(260px) scale(1);
+    opacity: 1;
+  }
+  70% {
+    transform: rotate(420deg) translateX(80px) scale(0.6);
+    opacity: 0.8;
+  }
+  100% {
+    transform: rotate(720deg) translateX(10px) scale(0.2);
+    opacity: 0;
+  }
+}
+
+/* Slow disk rotation */
+@keyframes diskRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ================================
+   Gravitational Lensing Effect
+================================ */
+
+/* Stretch stars as they approach the black hole */
+.star {
+  transform-origin: center;
+}
+
+/* Extra distortion near the end of the spiral */
+@keyframes spiral {
+  0% {
+    transform: rotate(0deg) translateX(260px) scale(1, 1);
+    opacity: 1;
+  }
+
+  60% {
+    transform: rotate(360deg) translateX(120px) scale(1, 1);
+    opacity: 0.9;
+  }
+
+  85% {
+    transform: rotate(520deg) translateX(40px) scale(1.8, 0.4);
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: rotate(720deg) translateX(10px) scale(0.2, 0.1);
+    opacity: 0;
+  }
+}
+
+/* ================================
+   Black Hole Light Distortion Halo
+================================ */
+
+.blackhole::before {
+  content: "";
+  position: absolute;
+  inset: -35px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    rgba(124,92,255,0.15),
+    rgba(255,255,255,0.05),
+    rgba(124,92,255,0.12),
+    rgba(0,0,0,0.2),
+    rgba(124,92,255,0.15)
+  );
+  filter: blur(18px);
+  opacity: 0.6;
+  animation: lensRotate 14s linear infinite,
+             lensPulse 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Slow rotation = space bending */
+@keyframes lensRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Gentle breathing = gravity pressure */
+@keyframes lensPulse {
+  0%,100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.15); opacity: 0.75; }
+}
+
+/* ================================
+   Eye Reaction to Star Intake
+================================ */
+
+/* Pupil reacts */
+.blackhole {
+  animation:
+    pull 6s ease-in-out infinite,
+    intake 12s ease-in-out infinite;
+}
+
+/* Iris subtly contracts */
+.iris {
+  animation: irisReact 12s ease-in-out infinite;
+}
+
+/* Reaction timing synced to star spiral end */
+@keyframes intake {
+  0%, 70% {
+    transform: scale(1);
+  }
+  85% {
+    transform: scale(0.85);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes irisReact {
+  0%, 70% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  85% {
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* ================================
+   Event Horizon Star Field
+================================ */
+
+.accretion-disk {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  animation: diskRotate 60s linear infinite;
+  z-index: 1;
+}
+
+/* Base star */
+.star {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 2px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(255,255,255,0.8);
+  animation: spiral 14s linear infinite;
+  animation-delay: calc(-1s * var(--i));
+}
+
+/* Mid layer */
+.star.mid {
+  width: 2.5px;
+  height: 2.5px;
+  opacity: 0.85;
+  animation-duration: 10s;
+}
+
+/* Inner layer */
+.star.inner {
+  width: 3px;
+  height: 3px;
+  opacity: 0.7;
+  animation-duration: 7s;
+}
+
+/* Spiral animation (shared) */
+@keyframes spiral {
+  0% {
+    transform:
+      rotate(0deg)
+      translateX(280px)
+      scale(1, 1);
+    opacity: 1;
+  }
+
+  65% {
+    transform:
+      rotate(420deg)
+      translateX(120px)
+      scale(1, 1);
+    opacity: 0.9;
+  }
+
+  85% {
+    transform:
+      rotate(600deg)
+      translateX(50px)
+      scale(1.6, 0.4);
+    opacity: 0.6;
+  }
+
+  100% {
+    transform:
+      rotate(760deg)
+      translateX(12px)
+      scale(0.2, 0.1);
+    opacity: 0;
+  }
+}
+
+/* ================================
+   3D Tilted Accretion Disk
+================================ */
+
+/* Give the scene depth */
+.eye-container {
+  perspective: 800px;
+}
+
+/* Tilt the disk in 3D space */
+.accretion-disk {
+  transform-style: preserve-3d;
+  transform: rotateX(65deg) rotateZ(0deg);
+}
+
+/* Keep stars flat to the disk plane */
+.star {
+  transform-origin: center;
+}
+
+/* ================================
+   Plasma Streaks (Inner Disk)
+================================ */
+
+/* Plasma layer */
+.accretion-disk::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+
+  background:
+    repeating-conic-gradient(
+      from 0deg,
+      rgba(124,92,255,0.35) 0deg,
+      rgba(124,92,255,0.35) 1deg,
+      transparent 6deg,
+      transparent 12deg
+    );
+
+  mask-image: radial-gradient(
+    circle at center,
+    transparent 55%,
+    black 62%,
+    black 78%,
+    transparent 85%
+  );
+
+  filter: blur(6px);
+  opacity: 0.3;
+
+  animation:
+    plasmaSpin 28s linear infinite,
+    plasmaPulse 6s ease-in-out infinite;
+}
+
+/* Faster spin near event horizon */
+@keyframes plasmaSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Heat fluctuation */
+@keyframes plasmaPulse {
+  0%,100% { opacity: 0.35; }
+  50% { opacity: 0.65; }
+}
+
+/* ================================
+   Visible Cosmic Dust (Refined)
+================================ */
+
+.eye-container::before {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  pointer-events: none;
+
+  /* Bring dust above background but below stars */
+  z-index: 0.5;
+
+  background-image:
+    radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.25), transparent),
+    radial-gradient(1.5px 1.5px at 70% 40%, rgba(255,255,255,0.18), transparent),
+    radial-gradient(2.5px 2.5px at 40% 80%, rgba(124,92,255,0.22), transparent),
+    radial-gradient(1.5px 1.5px at 60% 20%, rgba(124,92,255,0.18), transparent),
+    radial-gradient(2px 2px at 85% 75%, rgba(255,255,255,0.15), transparent),
+    radial-gradient(1.5px 1.5px at 10% 60%, rgba(124,92,255,0.2), transparent);
+
+  background-size: 260px 260px;
+  filter: blur(1px);
+
+  opacity: 0.8;
+  animation: dustDrift 90s linear infinite;
+}
+
+@keyframes dustDrift {
+  from {
+    transform: translateY(0) translateX(0);
+  }
+  to {
+    transform: translateY(-160px) translateX(120px);
+  }
+}
+
+/* ================================
+   Corner Galaxies
+================================ */
+
+.galaxy {
+  position: fixed;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  pointer-events: auto;
+  z-index: 2;
+  cursor: pointer;
+
+  background:
+    radial-gradient(circle at center,
+      rgba(255,255,255,0.9) 0%,
+      rgba(124,92,255,0.6) 18%,
+      rgba(124,92,255,0.25) 40%,
+      rgba(124,92,255,0.1) 55%,
+      transparent 70%
+    );
+
+  box-shadow:
+    0 0 30px rgba(124,92,255,0.35),
+    inset 0 0 20px rgba(255,255,255,0.15);
+
+  animation:
+    galaxySpin 40s linear infinite,
+    galaxyPulse 6s ease-in-out infinite;
+
+  opacity: 0.9;
+}
+
+/* Hover = invitation */
+.galaxy:hover {
+  transform: scale(1.08);
+  box-shadow:
+    0 0 50px rgba(124,92,255,0.6),
+    inset 0 0 30px rgba(255,255,255,0.25);
+}
+
+/* Positions */
+.galaxy-writing {
+  top: 40px;
+  left: 40px;
+}
+
+.galaxy-film {
+  top: 40px;
+  right: 40px;
+}
+
+.galaxy-games {
+  bottom: 40px;
+  right: 40px;
+}
+
+/* Subtle variation per galaxy */
+.galaxy-writing {
+  filter: hue-rotate(0deg);
+}
+
+.galaxy-film {
+  filter: hue-rotate(35deg);
+}
+
+.galaxy-games {
+  filter: hue-rotate(70deg);
+}
+
+/* Animations */
+@keyframes galaxySpin {
+  from { rotate: 0deg; }
+  to { rotate: 360deg; }
+}
+
+@keyframes galaxyPulse {
+  0%,100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+/* ================================
+   Galaxy Hover Labels
+================================ */
+
+.galaxy-label {
+  position: absolute;
+  bottom: -36px;
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  color: rgba(255,255,255,0.9);
+  background: rgba(0,0,0,0.45);
+  padding: 6px 12px;
+  border-radius: 14px;
+
+  opacity: 0;
+  pointer-events: none;
+
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+
+/* Reveal on hover */
+.galaxy:hover .galaxy-label {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Mobile: always visible */
+@media (max-width: 768px) {
+  .galaxy-label {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+  </style>
+</head>
+
+<body>
+
+<!-- Cosmic Eye Background -->
+<div class="eye-container">
+    <!-- Swirling Stars -->
+  <div class="accretion-disk">
+    <!-- Outer stars -->
+<span class="star" style="--i:1"></span>
+<span class="star" style="--i:3"></span>
+<span class="star" style="--i:5"></span>
+<span class="star"></span>
+<span class="star"></span>
+<span class="star"></span>
+<span class="star"></span>
+<span class="star"></span>
+
+  <!-- Mid stars -->
+<span class="star mid" style="--i:2"></span>
+<span class="star mid" style="--i:4"></span>
+<span class="star mid"></span>
+<span class="star mid"></span>
+<span class="star mid"></span>
+<span class="star mid"></span>
+
+  <!-- Inner stars -->
+<span class="star inner" style="--i:1"></span>
+<span class="star inner" style="--i:3"></span>
+<span class="star inner"></span>
+<span class="star inner"></span>
+  </div>
+  <div class="eye">
+    <div class="eyelid top"></div>
+    <div class="eyelid bottom"></div>
+    <div class="iris">
+      <div class="blackhole"></div>
+    </div>
+  </div>
+</div>
+<!-- Galaxies -->
+<a href="writing.html" class="galaxy galaxy-writing" aria-label="Writing Galaxy">
+  <span class="galaxy-label">Writing</span>
+</a>
+
+<a href="filmmaking.html" class="galaxy galaxy-film" aria-label="Filmmaking Galaxy">
+  <span class="galaxy-label">Filmmaking</span>
+</a>
+
+<a href="games.html" class="galaxy galaxy-games" aria-label="Game Development Galaxy">
+  <span class="galaxy-label">Game Dev</span>
+</a>
+
+  <header>
+    <h1>Geerdyverse</h1>
+    <div class="sub">A social universe for creators</div>
+  </header>
+
+  <section class="placeholder">
+    <h2>The Universe Is Forming</h2>
+    <p>
+      This space will host creators from writing, film, games,
+      worldbuilding, and more.
+    </p>
+    <p>
+      Profiles, posts, collaborations, and shared creation
+      will live here.
+    </p>
+    <p style="opacity:0.7;">
+      Tools will be added as planets later.
+    </p>
+  </section>
+
+</body>
+</html>
