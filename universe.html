@@ -877,6 +877,45 @@ header,
 .blackhole.intake {
   animation: pull 0.3s ease-in-out 2;
 }
+
+/* ================================
+   Galaxy Orbit Phase (Before Intake)
+================================ */
+
+.galaxy.orbiting {
+  animation: galaxyOrbit 1.2s ease-in forwards;
+  pointer-events: none;
+}
+
+@keyframes galaxyOrbit {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+
+  100% {
+    transform: rotate(420deg) scale(0.85);
+  }
+}
+
+/* ================================
+   White Explosion Flash
+================================ */
+
+.universe-flash {
+  position: fixed;
+  inset: 0;
+  background: white;
+  opacity: 0;
+  z-index: 9999;
+  pointer-events: none;
+  animation: universeFlash 0.45s ease-out forwards;
+}
+
+@keyframes universeFlash {
+  0% { opacity: 0; }
+  30% { opacity: 1; }
+  100% { opacity: 0; }
+}
     
   </style>
 </head>
@@ -957,34 +996,41 @@ header,
     galaxy.addEventListener('click', function (e) {
       e.preventDefault();
 
-      // Get galaxy position
       const rect = galaxy.getBoundingClientRect();
       const gx = rect.left + rect.width / 2;
       const gy = rect.top + rect.height / 2;
 
-      // Store position for animation
       galaxy.style.setProperty('--gx', gx + 'px');
       galaxy.style.setProperty('--gy', gy + 'px');
 
-      // Trigger galaxy consumption
-      galaxy.classList.add('consumed');
-      
-      // Trigger black hole reaction
       const blackhole = document.querySelector('.blackhole');
-      blackhole?.classList.add('intake');
-      
-      // Remove intake class after reaction
-      setTimeout(() => {
-        blackhole?.classList.remove('intake');
-      }, 600);
-
-
       const target = galaxy.getAttribute('href');
 
-      // Navigate after animation
+      // 1️⃣ Orbit phase
+      galaxy.classList.add('orbiting');
+
+      // 2️⃣ Eye reacts slightly early
+      setTimeout(() => {
+        blackhole?.classList.add('intake');
+      }, 500);
+
+      // 3️⃣ Galaxy gets consumed
+      setTimeout(() => {
+        galaxy.classList.remove('orbiting');
+        galaxy.classList.add('consumed');
+      }, 1200);
+
+      // 4️⃣ White explosion
+      setTimeout(() => {
+        const flash = document.createElement('div');
+        flash.className = 'universe-flash';
+        document.body.appendChild(flash);
+      }, 1550);
+
+      // 5️⃣ Navigate after impact
       setTimeout(() => {
         window.location.href = target;
-      }, 700);
+      }, 1750);
     });
   });
 </script>
