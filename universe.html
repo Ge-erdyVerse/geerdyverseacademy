@@ -581,10 +581,6 @@
   filter: none;
 }
 
-.galaxy-film {
-  filter: hue-rotate(35deg);
-}
-
 .galaxy-games {
   filter: hue-rotate(70deg);
 }
@@ -931,6 +927,48 @@ header,
   30% { opacity: 1; }
   100% { opacity: 0; }
 }
+
+/* 🔒 FORCE Writing Galaxy Color (Desktop + Mobile) */
+.galaxy.galaxy-writing {
+  background:
+    radial-gradient(circle at center,
+      #f2f1dc 0%,
+      #c9c89a 15%,
+      #8fa86a 35%,
+      #4f6f3a 55%,
+      #2f4f1f 70%,
+      transparent 78%
+    ) !important;
+
+  box-shadow:
+    0 0 28px rgba(143, 168, 106, 0.45),
+    0 0 60px rgba(47, 79, 31, 0.35),
+    inset 0 0 22px rgba(255,255,255,0.18) !important;
+
+  filter: none !important;
+}
+
+/* 🎬 FORCE Filmmaking Galaxy — Red & Gold Cinematic Theme */
+.galaxy.galaxy-film {
+  background:
+    radial-gradient(circle at center,
+      #fff3d1 0%,
+      #ffd27a 12%,
+      #ff9f43 28%,
+      #d35400 45%,
+      #8e1b10 62%,
+      #4a0a05 75%,
+      transparent 82%
+    ) !important;
+
+  box-shadow:
+    0 0 26px rgba(255, 183, 77, 0.55),
+    0 0 60px rgba(211, 84, 0, 0.45),
+    0 0 90px rgba(142, 27, 16, 0.35),
+    inset 0 0 24px rgba(255,255,255,0.22) !important;
+
+  filter: none !important;
+}
     
   </style>
 </head>
@@ -1052,6 +1090,7 @@ header,
 
 </body>
 </html>
+
 
 
 
