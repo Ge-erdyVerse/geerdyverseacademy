@@ -582,7 +582,13 @@ function authorizePen() {
 
   document.getElementById("penOverlay").style.display = "none";
 
-  alert(`Welcome, ${penName}. Access granted.`);
+  // Save pen name for the profile page
+  localStorage.setItem("penName", penName);
+
+  // Go to profile
+  setTimeout(() => {
+    window.location.href = "profile.html";
+  }, 300);
 }
 </script>
 
@@ -613,4 +619,5 @@ function authorizePen() {
 </div>
 
 </body>
+
 </html>
