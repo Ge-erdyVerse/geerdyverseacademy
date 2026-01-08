@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Creator Starship — Profile</title>
+
+<style>
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+  background: #000;
+}
+
+/* ============= STARSHIP WINDOW BACKGROUND ============= */
+.cockpit-window {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, #0a1408, #000);
+  overflow: hidden;
+}
+
+.cockpit-window::before {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  background: url('https://i.imgur.com/1m8H2Yb.png'); /* STARFIELD */
+  background-size: cover;
+  opacity: 0.45;
+  animation: drift 140s linear infinite;
+}
+
+@keyframes drift {
+  from { transform: translate(0,0) scale(1); }
+  to { transform: translate(-220px,-140px) scale(1.4); }
+}
+
+/* ============= METAL FRAME ============= */
+.frame {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(#111, #050505) padding-box,
+    linear-gradient(145deg, #4f6f3a, transparent) border-box;
+  border: 40px solid transparent;
+  border-radius: 30px;
+  box-shadow:
+    0 0 40px rgba(143,168,106,0.4),
+    inset 0 0 40px rgba(143,168,106,0.25);
+}
+
+/* =============== HOLOGRAM HEADER =============== */
+.profile-holo {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: #eafff3;
+  text-shadow: 0 0 12px rgba(143,168,106,1);
+}
+
+.profile-holo h1 {
+  font-size: 2.4rem;
+  margin: 0;
+}
+
+.profile-holo p {
+  margin: 6px 0;
+  opacity: 0.7;
+}
+
+/* =============== HOLOGRAM TABS =============== */
+.holo-tabs {
+  position: absolute;
+  top: 130px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 18px;
+}
+
+.holo-tabs button {
+  background: rgba(79,111,58,0.35);
+  border: 1px solid rgba(143,168,106,0.5);
+  color: #eafff3;
+  padding: 10px 18px;
+  border-radius: 16px;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: 0.3s;
+}
+
+.holo-tabs button:hover {
+  background: rgba(143,168,106,0.8);
+}
+
+/* ================== FEED PANELS ================== */
+.feed-area {
+  position: absolute;
+  top: 190px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  height: 60%;
+  overflow-y: auto;
+}
+
+.post {
+  background: rgba(30,40,28,0.55);
+  padding: 20px;
+  margin-bottom: 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(143,168,106,0.4);
+  box-shadow: 0 0 20px rgba(143,168,106,0.25);
+  color: #eafff3;
+  backdrop-filter: blur(3px);
+}
+
+.post h2 {
+  margin-top: 0;
+}
+
+/* ================= RIGHT SIDE CONSOLE ================= */
+.console {
+  position: fixed;
+  right: 40px;
+  top: 160px;
+  width: 160px;
+  background: rgba(0,0,0,0.35);
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(143,168,106,0.4);
+  color: #eafff3;
+  box-shadow: 0 0 14px rgba(143,168,106,0.3);
+  backdrop-filter: blur(4px);
+}
+
+.console button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 8px;
+  background: rgba(143,168,106,0.25);
+  border: 1px solid rgba(143,168,106,0.45);
+  color: #eafff3;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.console button:hover {
+  background: rgba(143,168,106,0.6);
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="cockpit-window"></div>
+<div class="frame"></div>
+
+<!-- HOLOGRAPHIC HEADER -->
+<div class="profile-holo">
+  <h1 id="penName"></h1>
+  <p>Writer of the Geerdyverse</p>
+</div>
+
+<!-- TABS -->
+<div class="holo-tabs">
+  <button>Feed</button>
+  <button>Writing</button>
+  <button>Film</button>
+  <button>Games</button>
+  <button>About</button>
+</div>
+
+<!-- FEED -->
+<div class="feed-area" id="feed">
+  <div class="post">
+    <h2>Welcome aboard</h2>
+    <p>This is your starship. Your stories fuel your engines.</p>
+  </div>
+</div>
+
+<!-- SIDE CONSOLE -->
+<div class="console">
+  <button onclick="openQuill()">Open Quill</button>
+  <button>Star Map</button>
+  <button>Solar System</button>
+  <button>Edit Profile</button>
+</div>
+
+<script>
+  // Load pen name from storage
+  document.getElementById("penName").textContent =
+    localStorage.getItem("penName") || "Traveler";
+
+  function openQuill() {
+    window.location.href = "writing-system.html";
+  }
+</script>
+
+</body>
+</html>
