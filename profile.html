@@ -6,169 +6,327 @@
 <title>Creator Starship — Profile</title>
 
 <style>
+/* =====================================================
+   GLOBAL
+===================================================== */
 body {
   margin: 0;
   overflow: hidden;
   font-family: 'Poppins', sans-serif;
+  color: #eafff3;
   background: #000;
-}
-
-/* ============= STARSHIP WINDOW BACKGROUND ============= */
-.cockpit-window {
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(circle at center, #0a1408, #000);
-  overflow: hidden;
-}
-
-.cockpit-window::before {
-  content: "";
-  position: absolute;
-  inset: -50%;
-  background: url('https://i.imgur.com/1m8H2Yb.png'); /* STARFIELD */
+  background-image:
+    radial-gradient(circle 1px at 20% 30%, rgba(255,255,255,0.4) 0px, transparent 2px),
+    radial-gradient(circle 1px at 80% 70%, rgba(255,255,255,0.35) 0px, transparent 2px),
+    radial-gradient(circle 1px at 40% 90%, rgba(255,255,255,0.25) 0px, transparent 2px),
+    radial-gradient(circle 1px at 70% 20%, rgba(255,255,255,0.3) 0px, transparent 2px);
   background-size: cover;
-  opacity: 0.45;
-  animation: drift 140s linear infinite;
 }
 
-@keyframes drift {
-  from { transform: translate(0,0) scale(1); }
-  to { transform: translate(-220px,-140px) scale(1.4); }
-}
-
-/* ============= METAL FRAME ============= */
-.frame {
+/* Scanlines */
+body::after {
+  content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background:
-    linear-gradient(#111, #050505) padding-box,
-    linear-gradient(145deg, #4f6f3a, transparent) border-box;
-  border: 40px solid transparent;
-  border-radius: 30px;
-  box-shadow:
-    0 0 40px rgba(143,168,106,0.4),
-    inset 0 0 40px rgba(143,168,106,0.25);
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.015) 0,
+    rgba(255,255,255,0.015) 2px,
+    transparent 3px,
+    transparent 6px
+  );
+  z-index: 1000;
 }
 
-/* =============== HOLOGRAM HEADER =============== */
-.profile-holo {
+/* =====================================================
+   COCKPIT FRAME
+===================================================== */
+.cockpit {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+
+  background:
+    linear-gradient(#0a0d0a, #040604) padding-box,
+    linear-gradient(135deg, rgba(143,168,106,0.3), transparent) border-box;
+
+  border: 36px solid transparent;
+  border-radius: 26px;
+
+  box-shadow:
+    inset 0 0 80px rgba(0,0,0,0.8),
+    inset 0 0 40px rgba(143,168,106,0.15),
+    0 0 40px rgba(0,0,0,0.8);
+}
+
+/* =====================================================
+   IDENTITY MODULE
+===================================================== */
+.identity-module {
+  position: fixed;
+  top: 140px;
+  left: 40px;
+  width: 200px;
+
+  padding: 18px;
+  border-radius: 18px;
+
+  background: rgba(0,0,0,0.45);
+  border: 1px solid rgba(143,168,106,0.45);
+  backdrop-filter: blur(6px);
+
+  box-shadow:
+    0 0 20px rgba(143,168,106,0.3),
+    inset 0 0 20px rgba(143,168,106,0.15);
+
+  z-index: 10;
+}
+
+.identity-module h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  margin-bottom: 4px;
+}
+
+.identity-module p {
+  margin: 2px 0;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+/* XP Reactor (dynamic) */
+.reactor {
+  margin: 14px auto;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: conic-gradient(
+    rgba(143,168,106,0.8) 0%,
+    rgba(143,168,106,0.15) 0%
+  );
+  border: 4px solid rgba(143,168,106,0.45);
+  position: relative;
+  box-shadow: 0 0 14px rgba(143,168,106,0.3);
+}
+
+.reactor::after {
+  content: "";
   position: absolute;
-  top: 50px;
+  inset: 6px;
+  border-radius: 50%;
+  background: rgba(143,168,106,0.25);
+  box-shadow: inset 0 0 12px rgba(143,168,106,0.5);
+}
+
+/* =====================================================
+   HOLO HEADER
+===================================================== */
+.profile-holo {
+  position: fixed;
+  top: 38px;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 10;
   text-align: center;
-  color: #eafff3;
-  text-shadow: 0 0 12px rgba(143,168,106,1);
+  text-shadow: 0 0 14px rgba(143,168,106,0.9);
 }
 
 .profile-holo h1 {
-  font-size: 2.4rem;
   margin: 0;
+  font-size: 2.6rem;
 }
 
 .profile-holo p {
-  margin: 6px 0;
-  opacity: 0.7;
+  margin: 5px 0;
+  opacity: 0.8;
 }
 
-/* =============== HOLOGRAM TABS =============== */
-.holo-tabs {
-  position: absolute;
-  top: 130px;
+/* =====================================================
+   NAV TABS
+===================================================== */
+.nav-tabs {
+  position: fixed;
+  top: 118px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 18px;
+  gap: 16px;
+  z-index: 10;
 }
 
-.holo-tabs button {
-  background: rgba(79,111,58,0.35);
-  border: 1px solid rgba(143,168,106,0.5);
+.nav-tabs button {
+  padding: 10px 22px;
+  border-radius: 20px;
+
+  background: rgba(60,80,55,0.45);
   color: #eafff3;
-  padding: 10px 18px;
-  border-radius: 16px;
+  border: 1px solid rgba(143,168,106,0.5);
+
+  backdrop-filter: blur(6px);
   cursor: pointer;
-  backdrop-filter: blur(4px);
-  transition: 0.3s;
+  transition: 0.25s;
 }
 
-.holo-tabs button:hover {
-  background: rgba(143,168,106,0.8);
+.nav-tabs button:hover {
+  background: rgba(143,168,106,0.85);
+  transform: translateY(-2px);
 }
 
-/* ================== FEED PANELS ================== */
-.feed-area {
-  position: absolute;
-  top: 190px;
+/* =====================================================
+   FEED SCREEN
+===================================================== */
+.feed-screen {
+  position: fixed;
+  top: 178px;
   left: 50%;
   transform: translateX(-50%);
-  width: 70%;
-  height: 60%;
+  width: min(85%, 1020px);
+  height: calc(100% - 280px);
+
+  z-index: 9;
+
+  padding: 26px;
+
+  background: rgba(10,14,10,0.35);
+  border: 1px solid rgba(143,168,106,0.3);
+  border-radius: 20px;
+
+  box-shadow:
+    0 0 30px rgba(143,168,106,0.25),
+    inset 0 0 20px rgba(143,168,106,0.15);
+
   overflow-y: auto;
 }
 
+/* Posts */
 .post {
-  background: rgba(30,40,28,0.55);
-  padding: 20px;
-  margin-bottom: 18px;
+  background: rgba(20,26,18,0.5);
+  padding: 18px;
   border-radius: 14px;
   border: 1px solid rgba(143,168,106,0.4);
-  box-shadow: 0 0 20px rgba(143,168,106,0.25);
-  color: #eafff3;
-  backdrop-filter: blur(3px);
+  margin-bottom: 18px;
+  box-shadow: 0 0 14px rgba(143,168,106,0.25);
 }
 
 .post h2 {
-  margin-top: 0;
+  margin: 0 0 6px;
+  font-size: 1.4rem;
 }
 
-/* ================= RIGHT SIDE CONSOLE ================= */
-.console {
+.post small {
+  opacity: 0.6;
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* =====================================================
+   RIGHT CONSOLE
+===================================================== */
+.side-console {
   position: fixed;
-  right: 40px;
+  right: 38px;
   top: 160px;
-  width: 160px;
-  background: rgba(0,0,0,0.35);
-  padding: 16px;
-  border-radius: 14px;
-  border: 1px solid rgba(143,168,106,0.4);
-  color: #eafff3;
-  box-shadow: 0 0 14px rgba(143,168,106,0.3);
-  backdrop-filter: blur(4px);
+  width: 165px;
+
+  background: rgba(0,0,0,0.45);
+  padding: 18px;
+  border-radius: 18px;
+
+  border: 1px solid rgba(143,168,106,0.45);
+  backdrop-filter: blur(6px);
+  z-index: 10;
+
+  box-shadow:
+    0 0 20px rgba(143,168,106,0.3),
+    inset 0 0 20px rgba(143,168,106,0.15);
 }
 
-.console button {
+.side-console button {
   width: 100%;
+  padding: 10px;
   margin-top: 10px;
-  padding: 8px;
+  border-radius: 14px;
+
   background: rgba(143,168,106,0.25);
   border: 1px solid rgba(143,168,106,0.45);
   color: #eafff3;
-  border-radius: 10px;
+
   cursor: pointer;
+  transition: 0.25s;
 }
 
-.console button:hover {
-  background: rgba(143,168,106,0.6);
+.side-console button:hover {
+  background: rgba(143,168,106,0.7);
+}
+
+/* =====================================================
+   SHIP STATUS PANEL
+===================================================== */
+.ship-status {
+  position: fixed;
+  left: 40px;
+  bottom: 40px;
+  width: 220px;
+
+  padding: 14px;
+  border-radius: 14px;
+
+  background: rgba(0,0,0,0.45);
+  border: 1px solid rgba(143,168,106,0.45);
+  backdrop-filter: blur(6px);
+
+  box-shadow:
+    0 0 20px rgba(143,168,106,0.25),
+    inset 0 0 20px rgba(143,168,106,0.15);
+
+  z-index: 12;
+}
+
+.ship-status p {
+  margin: 2px 0;
+  font-size: 0.82rem;
+  opacity: 0.85;
+}
+
+/* =====================================================
+   MOBILE FIXES
+===================================================== */
+@media (max-width: 768px) {
+  .identity-module, .ship-status { display: none; }
+  .side-console {
+    width: 75%;
+    right: 50%;
+    transform: translateX(50%);
+    bottom: 22px;
+    top: auto;
+  }
+  .profile-holo h1 { font-size: 1.9rem; }
 }
 </style>
-
 </head>
 
 <body>
 
-<div class="cockpit-window"></div>
-<div class="frame"></div>
+<div class="cockpit"></div>
 
-<!-- HOLOGRAPHIC HEADER -->
+<!-- IDENTITY MODULE -->
+<div class="identity-module">
+  <h2 id="penName">Traveler</h2>
+  <p id="rankText">Rank: Apprentice Scribe</p>
+  <div class="reactor" id="xpReactor"></div>
+  <p>System: Writing Galaxy</p>
+  <p id="logCount">Log Entries: 0</p>
+</div>
+
+<!-- HEADER -->
 <div class="profile-holo">
-  <h1 id="penName"></h1>
+  <h1 id="penNameHeader"></h1>
   <p>Writer of the Geerdyverse</p>
 </div>
 
-<!-- TABS -->
-<div class="holo-tabs">
+<!-- NAV BAR -->
+<div class="nav-tabs">
   <button>Feed</button>
   <button>Writing</button>
   <button>Film</button>
@@ -177,29 +335,172 @@ body {
 </div>
 
 <!-- FEED -->
-<div class="feed-area" id="feed">
-  <div class="post">
-    <h2>Welcome aboard</h2>
-    <p>This is your starship. Your stories fuel your engines.</p>
-  </div>
-</div>
+<div class="feed-screen" id="feed"></div>
 
-<!-- SIDE CONSOLE -->
-<div class="console">
+<!-- RIGHT CONSOLE -->
+<div class="side-console">
   <button onclick="openQuill()">Open Quill</button>
+  <button id="addPostBtn">Create Log Entry</button>
   <button>Star Map</button>
   <button>Solar System</button>
   <button>Edit Profile</button>
 </div>
 
-<script>
-  // Load pen name from storage
-  document.getElementById("penName").textContent =
-    localStorage.getItem("penName") || "Traveler";
+<!-- SHIP STATUS -->
+<div class="ship-status">
+  <p><strong>SHIP STATUS</strong></p>
+  <p id="cpuLoad">CPU Load: 0%</p>
+  <p id="dataVault">Data Vault: 0 TB</p>
+  <p id="orbit">Orbit: Core System</p>
+  <p id="stardate">Stardate: --.--.--</p>
+</div>
 
-  function openQuill() {
-    window.location.href = "writing-system.html";
-  }
+<script>
+/* ======================================================
+   DYNAMIC SYSTEM
+======================================================*/
+
+// Load name
+const name = localStorage.getItem("penName") || "Traveler";
+document.getElementById("penNameHeader").textContent = name;
+document.getElementById("penName").textContent = name;
+
+// Load logs
+let logs = JSON.parse(localStorage.getItem("logs")) || [];
+
+// RANK LOGIC
+function getRank(count) {
+  if (count <= 2) return "Apprentice Scribe";
+  if (count <= 6) return "Lore Engineer";
+  if (count <= 12) return "Star Bard";
+  return "Navigator of Worlds";
+}
+
+// Generate random coords
+function coords() {
+  return (
+    Math.floor(Math.random()*90+10) + "." +
+    Math.floor(Math.random()*90+10) + "." +
+    Math.floor(Math.random()*90+10)
+  );
+}
+
+// Update identity + XP + rank
+function updateIdentity() {
+  const count = logs.length;
+
+  document.getElementById("logCount").textContent =
+    "Log Entries: " + count;
+
+  document.getElementById("rankText").textContent =
+    "Rank: " + getRank(count);
+
+  // XP system
+  let percent = Math.min(count * 8, 100);
+  document.getElementById("xpReactor").style.background =
+    `conic-gradient(
+      rgba(143,168,106,0.8) ${percent}%,
+      rgba(143,168,106,0.15) ${percent}% 100%
+    )`;
+}
+
+// Render logs
+function renderLogs() {
+  const feed = document.getElementById("feed");
+  feed.innerHTML = `
+    <div style="margin-bottom:20px;">
+      <button id="createBtn" style="
+        padding:10px 18px;
+        border-radius:12px;
+        background:rgba(143,168,106,0.4);
+        border:1px solid rgba(143,168,106,0.5);
+        color:#eafff3;
+        cursor:pointer;
+      ">New Log Entry</button>
+    </div>
+  `;
+
+  logs.forEach((log, i) => {
+    feed.innerHTML += `
+      <div class="post">
+        <h2>Log Entry ${i+1} — ${log.title}</h2>
+        <small>Coordinates: ${log.coords} • ${log.galaxy}</small>
+        <p>${log.text}</p>
+
+        <button onclick="deleteLog(${i})" style="
+          margin-top:10px;
+          padding:6px 12px;
+          border-radius:10px;
+          background:rgba(255,50,50,0.35);
+          border:1px solid rgba(255,80,80,0.6);
+          color:#ffdede;
+          cursor:pointer;
+        ">Delete Log</button>
+      </div>
+    `;
+  });
+
+  document.getElementById("createBtn").onclick = createLog;
+
+  updateIdentity();
+  updateShipStatus();
+}
+
+// Create new log
+function createLog() {
+  const title = prompt("Enter Log Title:");
+  if (!title) return;
+
+  const text = prompt("Enter Log Content:");
+  if (!text) return;
+
+  const galaxies = ["Writing Galaxy", "Film Galaxy", "Game Galaxy"];
+  const galaxy = galaxies[Math.floor(Math.random()*galaxies.length)];
+
+  logs.push({
+    title,
+    text,
+    coords: coords(),
+    galaxy
+  });
+
+  localStorage.setItem("logs", JSON.stringify(logs));
+
+  renderLogs();
+}
+
+function deleteLog(index) {
+  if (!confirm("Delete this log entry?")) return;
+
+  logs.splice(index, 1); // remove 1 item at index
+  localStorage.setItem("logs", JSON.stringify(logs));
+
+  renderLogs();
+}
+
+// Ship status
+function updateShipStatus() {
+  document.getElementById("cpuLoad").textContent =
+    "CPU Load: " + Math.floor(Math.random()*60+20) + "%";
+
+  document.getElementById("dataVault").textContent =
+    "Data Vault: " + (logs.length * 2).toFixed(1) + " TB";
+
+  document.getElementById("stardate").textContent =
+    "Stardate: " +
+    Math.floor(Math.random()*300) + "." +
+    Math.floor(Math.random()*90) + "." +
+    Math.floor(Math.random()*90);
+}
+
+// OPEN QUILL
+function openQuill() {
+  window.location.href = "writing-system.html";
+}
+
+// INITIAL RENDER
+renderLogs();
+
 </script>
 
 </body>
