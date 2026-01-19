@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GeerdySense — Emotional Awareness Through Science</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --void-black: #0b0710;
+      --nebula-purple: #221324;
+      --paper-light: #fffef8;
+
+      --accent-violet: #7c5cff;
+      --accent-rose: #ff7ac4;
+
+      --text-dark: #2b163a;
+      --text-muted: #6e5b7b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(180deg, var(--void-black), var(--nebula-purple));
+      color: var(--paper-light);
+      overflow-x: hidden;
+    }
+
+    /* STARRY BACKGROUND (same as original) */
+    .stars {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+
+      background-image:
+        radial-gradient(2px 2px at 10% 20%, rgba(255,255,255,0.85), transparent),
+        radial-gradient(1.5px 1.5px at 30% 70%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 50% 40%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(2px 2px at 70% 80%, rgba(255,255,255,0.7), transparent),
+        radial-gradient(1.5px 1.5px at 90% 30%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 20% 90%, rgba(255,255,255,0.45), transparent);
+
+      background-size: 200px 200px;
+      animation: starDrift 90s linear infinite;
+    }
+
+    .stars::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+
+      background-image:
+        radial-gradient(1px 1px at 15% 25%, rgba(255,255,255,0.35), transparent),
+        radial-gradient(1px 1px at 85% 65%, rgba(255,255,255,0.25), transparent),
+        radial-gradient(1px 1px at 60% 10%, rgba(255,255,255,0.3), transparent);
+
+      background-size: 300px 300px;
+      animation: starDrift 160s linear infinite reverse;
+    }
+
+    @keyframes starDrift {
+      from { transform: translateY(0); }
+      to { transform: translateY(-400px); }
+    }
+
+    body > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* NAVIGATION */
+    .nav {
+      position: sticky;
+      top: 0;
+      background: rgba(11, 7, 16, 0.85);
+      backdrop-filter: blur(10px);
+      z-index: 10;
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: auto;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 1.2rem;
+    }
+
+    .nav a {
+      color: var(--paper-light);
+      text-decoration: none;
+      margin-left: 20px;
+      font-size: 0.9rem;
+      transition: opacity 0.2s ease;
+    }
+
+    .nav a:hover {
+      opacity: 0.8;
+    }
+
+    .nav-cta {
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--accent-violet);
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2.6rem;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      max-width: 620px;
+      margin: auto;
+      color: #ddd;
+      font-size: 1rem;
+    }
+
+    .hero-buttons {
+      margin-top: 30px;
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      padding: 12px 28px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, var(--accent-violet), var(--accent-rose));
+      color: white;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: transform 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+    }
+
+    .btn-secondary {
+      padding: 12px 28px;
+      border-radius: 28px;
+      border: 1px solid var(--accent-violet);
+      background: transparent;
+      color: white;
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(124,92,255,0.15);
+    }
+
+    /* SECTIONS */
+    .section {
+      max-width: 1100px;
+      margin: 80px auto;
+      padding: 0 20px;
+      text-align: center;
+    }
+
+    .section h2 {
+      font-family: 'Poppins', sans-serif;
+      margin-bottom: 20px;
+    }
+
+    .text-light {
+      color: #e4dff1;
+      max-width: 700px;
+      margin: auto;
+    }
+
+    /* FEATURE GRID */
+    .grid {
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      background: rgba(255, 250, 244, 0.96);
+      color: var(--text-dark);
+      padding: 30px;
+      border-radius: 16px;
+      text-align: left;
+    }
+
+    .card h3 {
+      font-family: 'Poppins', sans-serif;
+      margin-top: 0;
+    }
+
+    /* FAQ */
+    .faq-item {
+      background: rgba(255, 250, 244, 0.94);
+      color: var(--text-dark);
+      padding: 20px;
+      border-radius: 14px;
+      margin-bottom: 16px;
+      text-align: left;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      font-size: 0.8rem;
+      color: #aaa;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="stars"></div>
+
+  <!-- NAV -->
+  <header class="nav">
+    <div class="nav-inner">
+      <div class="logo">Geerdyverse</div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="academy.html">Academy</a>
+        <a href="#">Tools</a>
+        <a href="#" class="nav-cta">Join</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <h1>GeerdySense — Emotional Awareness Through Science</h1>
+      <p>
+        A next-generation wearable that reads your emotional signals,
+        protects you in danger, and guides you during stress, panic,
+        or overwhelming situations.
+      </p>
+      <div class="hero-buttons">
+        <a href="#how" class="btn-primary">How It Works</a>
+        <a href="#tech" class="btn-secondary">Technical Blueprint</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT IS GEERDYSENSE -->
+  <section class="section">
+    <h2>What is GeerdySense?</h2>
+    <p class="text-light">
+      GeerdySense is a science-driven emotional safety device that detects stress,
+      panic, fear, and danger through biosignals. It activates an intelligent
+      AI companion designed to guide, protect, and support you during emotional extremes.
+    </p>
+  </section>
+
+  <!-- WHY IT MATTERS -->
+  <section class="section">
+    <h2>Why It Matters</h2>
+    <p class="text-light">
+      The body shuts down before the mind understands danger.
+      Panic blocks speech. Freeze stops movement.  
+      GeerdySense transforms emotional signals into awareness and protection.
+    </p>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how" class="section">
+    <h2>How It Works</h2>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Emotional Biosignals</h3>
+        <p>Reads heart variability, skin conductance, tremors, and temperature shifts.</p>
+      </div>
+
+      <div class="card">
+        <h3>Emotion Engine</h3>
+        <p>Identifies calm, stress, panic, fear, dissociation, and danger patterns.</p>
+      </div>
+
+      <div class="card">
+        <h3>Crisis AI</h3>
+        <p>Guides you during panic, grounds you emotionally, or shifts into silent mode.</p>
+      </div>
+
+      <div class="card">
+        <h3>Emergency Protection</h3>
+        <p>Sends alerts, location, and help signals when emotional danger is detected.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURE GRID -->
+  <section class="section">
+    <h2>Features</h2>
+
+    <div class="grid">
+      <div class="card"><h3>Real-Time Emotional Detection</h3><p>Understands emotional states through biosignal analysis.</p></div>
+      <div class="card"><h3>Panic and Freeze Recognition</h3><p>Reads the physiological signatures of panic and freezing.</p></div>
+      <div class="card"><h3>Silent Mode</h3><p>Works invisibly when speaking or moving is unsafe.</p></div>
+      <div class="card"><h3>Crisis AI</h3><p>Provides guidance, grounding, and emergency checks.</p></div>
+      <div class="card"><h3>Emergency Alerts</h3><p>Sends help automatically when danger is confirmed.</p></div>
+      <div class="card"><h3>Privacy First</h3><p>All emotional processing happens on the device.</p></div>
+    </div>
+  </section>
+
+  <!-- SCIENCE -->
+  <section id="tech" class="section">
+    <h2>The Science Behind GeerdySense</h2>
+    <p class="text-light">
+      Powered by biosensors such as PPG, GSR, IMU, and temperature sensors,
+      combined with emotional modeling, crisis AI behavior, and a secure
+      emergency protocol system.
+    </p>
+  </section>
+
+  <!-- GEERDYVERSE CONNECTION -->
+  <section class="section">
+    <h2>The Geerdyverse Connection</h2>
+    <p class="text-light">
+      GeerdySense originates from the Mind Forge Galaxy — the system dedicated
+      to emotion, consciousness, and human resilience inside the Geerdyverse.
+    </p>
+  </section>
+
+  <!-- PRE-RELEASE -->
+  <section class="section">
+    <h2>Join the Pre-Release Program</h2>
+    <p class="text-light">Get updates, prototype access, and testing opportunities.</p>
+    <div style="margin-top: 20px;">
+        <a href="#" class="btn-primary">Sign Up</a>
+    </div>
+
+  </section>
+
+  <!-- FAQ -->
+  <section class="section">
+    <h2>FAQ</h2>
+
+    <div class="faq-item">
+      <strong>Is this a medical device?</strong>
+      <p>No. It is a personal emotional safety device designed for awareness and protection.</p>
+    </div>
+
+    <div class="faq-item">
+      <strong>Is my emotional data private?</strong>
+      <p>Yes. All emotional analysis is processed on the device.</p>
+    </div>
+
+    <div class="faq-item">
+      <strong>When will it be available?</strong>
+      <p>Currently in early development with upcoming prototype testing.</p>
+    </div>
+
+  </section>
+
+  <footer>
+    <p>© 2025 Geerdyverse • Emotional Science for Creators</p>
+  </footer>
+
+</body>
+</html>
