@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3D Modelling & Visualisation — Geerdyverse</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --void-black:#0b0710;
+      --nebula-purple:#221324;
+      --paper-light:#fffef8;
+      --accent-violet:#7c5cff;
+      --accent-rose:#ff7ac4;
+      --text-dark:#2b163a;
+      --text-muted:#6e5b7b;
+    }
+
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      font-family:'Inter',system-ui,sans-serif;
+      background:linear-gradient(180deg,var(--void-black),var(--nebula-purple));
+      color:var(--paper-light);
+      line-height:1.6;
+    }
+
+    .stars{
+      position:fixed;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+      background-image:
+        radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,.5), transparent),
+        radial-gradient(1px 1px at 70% 60%, rgba(255,255,255,.3), transparent),
+        radial-gradient(1px 1px at 50% 10%, rgba(255,255,255,.2), transparent);
+      background-size:260px 260px;
+      animation:drift 160s linear infinite;
+    }
+
+    @keyframes drift{
+      from{transform:translateY(0);}
+      to{transform:translateY(-350px);}
+    }
+
+    body>*{position:relative;z-index:1;}
+
+    .nav{
+      position:sticky;
+      top:0;
+      background:rgba(11,7,16,.85);
+      backdrop-filter:blur(10px);
+    }
+
+    .nav-inner{
+      max-width:1100px;
+      margin:auto;
+      padding:16px 20px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    .logo{
+      font-family:'Poppins',sans-serif;
+      font-weight:600;
+    }
+
+    .nav a{
+      color:white;
+      text-decoration:none;
+      margin-left:20px;
+      font-size:.9rem;
+    }
+
+    .hero{
+      text-align:center;
+      padding:100px 20px 50px;
+    }
+
+    .hero h1{
+      font-family:'Poppins',sans-serif;
+      font-size:2.4rem;
+      margin-bottom:14px;
+    }
+
+    .hero p{
+      max-width:720px;
+      margin:auto;
+      color:#ddd;
+    }
+
+    .panel{
+      background:var(--paper-light);
+      color:var(--text-dark);
+      max-width:950px;
+      margin:70px auto;
+      padding:60px 50px;
+      border-radius:20px;
+    }
+
+    .panel h2{
+      font-family:'Poppins',sans-serif;
+      margin-top:0;
+    }
+
+    .services{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:30px;
+      margin-top:40px;
+    }
+
+    .service{
+      background:#fff;
+      border-radius:16px;
+      padding:30px;
+    }
+
+    .service h3{
+      font-family:'Poppins',sans-serif;
+      margin-top:0;
+    }
+
+    .service ul{
+      padding-left:18px;
+      margin:12px 0;
+    }
+
+    .service li{
+      margin-bottom:8px;
+      font-size:.9rem;
+    }
+
+    .cta{
+      text-align:center;
+      margin-top:40px;
+    }
+
+    .cta-btn{
+      padding:14px 34px;
+      border-radius:28px;
+      border:none;
+      background:linear-gradient(135deg,var(--accent-violet),var(--accent-rose));
+      color:white;
+      font-size:.95rem;
+      cursor:pointer;
+      text-decoration:none;
+      display:inline-block;
+    }
+
+    .trust{
+      background:rgba(124,92,255,.08);
+      padding:24px;
+      border-radius:16px;
+      margin-top:40px;
+    }
+
+    footer{
+      text-align:center;
+      padding:40px 20px;
+      font-size:.8rem;
+      color:#aaa;
+    }
+
+    @media(max-width:600px){
+      .panel{padding:40px 20px;}
+      .hero h1{font-size:2rem;}
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="stars"></div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="logo">Geerdyverse</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="academy.html">Academy</a>
+      <a href="tools.html">Tools</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <h1>3D Modelling & Visualisation</h1>
+  <p>
+    High quality 3D assets, sculpting, product visualisation,  
+    architectural renders and cinematic sequences for creators and brands.
+  </p>
+</section>
+
+<section class="panel">
+
+  <h2>What This Service Is</h2>
+  <p>
+    This is a full 3D creation pipeline designed for creators who need  
+    accurate models, clean geometry, realistic materials or cinematic renders  
+    without expensive studio pipelines.
+  </p>
+  <p>
+    Every project is built with attention to shape, scale, realism and purpose.  
+    Whether it's a product concept or a detailed character sculpt, each asset  
+    is crafted with intention.
+  </p>
+
+  <div class="services">
+
+    <div class="service">
+      <h3>📦 Product Visualisation</h3>
+      <ul>
+        <li>Realistic product renders</li>
+        <li>360 degree turntable animations</li>
+        <li>Packaging and design previews</li>
+        <li>Ad ready product shots</li>
+        <li>Material and lighting variations</li>
+      </ul>
+    </div>
+
+    <div class="service">
+      <h3>🏙️ Architectural Visualisation</h3>
+      <ul>
+        <li>Interior and exterior renders</li>
+        <li>Lighting and ambience mockups</li>
+        <li>Walkthrough sequences</li>
+        <li>Furniture and prop modelling</li>
+        <li>Conceptual architectural previews</li>
+      </ul>
+    </div>
+
+    <div class="service">
+      <h3>🧱 3D Modelling</h3>
+      <ul>
+        <li>Hard surface modelling</li>
+        <li>Game ready models</li>
+        <li>High poly and low poly workflows</li>
+        <li>Clean topology and optimized meshes</li>
+        <li>Asset packs for creators and developers</li>
+      </ul>
+    </div>
+
+    <div class="service">
+      <h3>🗿 3D Sculpting</h3>
+      <ul>
+        <li>Character and creature sculpting</li>
+        <li>Fantasy, sci-fi and stylized sculpts</li>
+        <li>Detail passes and refinements</li>
+        <li>ZBrush style workflow output</li>
+        <li>High detail concept sculpts</li>
+      </ul>
+    </div>
+
+    <div class="service">
+      <h3>🎥 3D Cinematics</h3>
+      <ul>
+        <li>Cinematic camera animation</li>
+        <li>Short 3D sequences for creators</li>
+        <li>Product reveal animations</li>
+        <li>Scene lighting and composition</li>
+        <li>Atmospheric and stylized renders</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="trust">
+    <h3>Why This Exists</h3>
+    <p>
+      3D creation has become essential for creators, indie devs, filmmakers  
+      and brands. But most cannot access expensive pipelines.
+    </p>
+    <p>
+      This service brings high quality 3D work into an affordable,  
+      creator friendly space without sacrificing detail or visual strength.
+    </p>
+  </div>
+
+  <div class="cta">
+    <a href="3d-modelling-submit.html" class="cta-btn">Send Project Details</a>
+  </div>
+
+</section>
+
+<footer>
+  <p>© 2025 Geerdyverse • 3D Modelling & Visualisation</p>
+</footer>
+
+</body>
+</html>
