@@ -196,6 +196,26 @@
   justify-content: center;
   flex-wrap: wrap;
 }
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  margin: 30px auto 0;
+  padding-top: 56.25%;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+}
+
+.video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
 
   </style>
 </head>
@@ -311,17 +331,21 @@
   <div class="showcase">
   <h3>Sample Work</h3>
 
-  <img src="3d-showcase.jpg" alt="3D Modelling and Visualisation Sample">
+  <img src="assets/3d-showcase.jpeg" alt="3D Modelling and Visualisation Sample">
 
   <p>
-    A short example of the type of modelling, lighting and presentation
-    this service focuses on.
+    A short example demonstrating modelling quality, lighting,
+    materials and cinematic presentation.
   </p>
 
-  <div class="showcase-buttons">
-    <a href="3d-demo-video.mp4" target="_blank" class="cta-btn">
-      Watch 18s Demo Video
-    </a>
+  <div class="video-wrapper">
+    <iframe
+      src="https://www.youtube.com/embed/bAUx04JRGj4"
+      title="3D Modelling & Visualisation Demo"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerpolicy="strict-origin-when-cross-origin"
+      allowfullscreen>
+    </iframe>
   </div>
 </div>
 
@@ -337,5 +361,6 @@
 
 </body>
 </html>
+
 
 
