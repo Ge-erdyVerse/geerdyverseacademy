@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Edit Profile</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #050705;
+  color: #eafff3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.panel {
+  width: 360px;
+  padding: 24px;
+  border-radius: 20px;
+  background: rgba(0,0,0,0.55);
+  border: 1px solid rgba(143,168,106,0.5);
+  box-shadow: 0 0 30px rgba(143,168,106,0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 5;
+}
+
+.panel h1 {
+  text-align: center;
+  margin-bottom: 18px;
+  position: relative;
+  z-index: 5;
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  background: rgba(143,168,106,0.25);
+  border: 3px solid rgba(143,168,106,0.6);
+  background-size: cover;
+  background-position: center;
+}
+
+label {
+  display: block;
+  font-size: 0.85rem;
+  margin-top: 12px;
+  opacity: 0.85;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: 12px;
+  border: 1px solid rgba(143,168,106,0.5);
+  background: rgba(20,26,18,0.6);
+  color: #eafff3;
+  outline: none;
+}
+
+textarea {
+  resize: none;
+  height: 70px;
+}
+
+button {
+  width: 100%;
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(143,168,106,0.6);
+  background: rgba(143,168,106,0.35);
+  color: #eafff3;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+button:hover {
+  background: rgba(143,168,106,0.8);
+}
+
+.back {
+  margin-top: 10px;
+  background: rgba(255,255,255,0.08);
+}
+
+/* ===============================
+   AMBIENT HUD GRID
+================================ */
+.hud-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hud-box {
+  position: absolute;
+  width: 220px;
+  height: 140px;
+  background: rgba(0,0,0,0.18);
+  border: 1px solid rgba(143,168,106,0.25);
+  border-radius: 12px;
+  box-shadow:
+    inset 0 0 20px rgba(143,168,106,0.08),
+    0 0 20px rgba(143,168,106,0.12);
+  overflow: hidden;
+  opacity: 0.55;
+  transition: box-shadow 0.4s, opacity 0.4s;
+}
+
+body:has(textarea:focus) .hud-box,
+body:has(input:focus) .hud-box {
+  box-shadow:
+    inset 0 0 30px rgba(143,168,106,0.18),
+    0 0 30px rgba(143,168,106,0.25);
+}
+
+.hud-box canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+</style>
+</head>
+
+<body>
+
+<!-- AMBIENT HUD -->
+<div class="hud-layer" id="hud"></div>
+
+<div class="panel">
+  <h1>Edit Profile</h1>
+
+  <div class="avatar" id="avatarPreview"></div>
+
+  <label>Profile Picture</label>
+  <input type="file" id="avatarInput" accept="image/*" />
+
+  <label>Username</label>
+  <input type="text" id="nameInput" />
+
+  <label>Bio / Tagline</label>
+  <textarea id="bioInput"></textarea>
+
+  <button onclick="saveProfile()">Save Changes</button>
+  <button class="back" onclick="goBack()">Cancel</button>
+</div>
+
+<script>
+// Load existing data
+const nameInput = document.getElementById("nameInput");
+const bioInput = document.getElementById("bioInput");
+const avatarPreview = document.getElementById("avatarPreview");
+const avatarInput = document.getElementById("avatarInput");
+
+nameInput.value = localStorage.getItem("penName") || "Traveler";
+bioInput.value = localStorage.getItem("bio") || "Writer of the Ge-erdy Verse";
+
+const savedAvatar = localStorage.getItem("avatar");
+if (savedAvatar) {
+  avatarPreview.style.backgroundImage = `url(${savedAvatar})`;
+}
+
+// Preview avatar
+avatarInput.addEventListener("change", () => {
+  const file = avatarInput.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    avatarPreview.style.backgroundImage = `url(${reader.result})`;
+    avatarPreview.dataset.image = reader.result;
+  };
+  reader.readAsDataURL(file);
+});
+
+// Save profile
+function saveProfile() {
+  localStorage.setItem("penName", nameInput.value.trim());
+  localStorage.setItem("bio", bioInput.value.trim());
+
+  if (avatarPreview.dataset.image) {
+    localStorage.setItem("avatar", avatarPreview.dataset.image);
+  }
+
+  window.location.href = "profile.html";
+}
+
+function goBack() {
+  window.location.href = "profile.html";
+}
+
+/* ===============================
+   CONTEXT STATE
+================================ */
+let hudContext = "idle";
+// idle | typing | uploading | saving
+
+/* ===============================
+   AMBIENT HUD SYSTEM
+================================ */
+
+const hud = document.getElementById("hud");
+const BOX_COUNT = 12;
+
+function createBox(x, y, type) {
+  const box = document.createElement("div");
+  box.className = "hud-box";
+  box.style.left = x + "px";
+  box.style.top = y + "px";
+
+  const canvas = document.createElement("canvas");
+  box.appendChild(canvas);
+  hud.appendChild(box);
+
+  canvas.width = 220;
+  canvas.height = 140;
+
+  if (type === "waves") waves(canvas);
+  if (type === "bars") bars(canvas);
+  if (type === "pie") pie(canvas);
+}
+
+function waves(canvas) {
+  const ctx = canvas.getContext("2d");
+  let t = Math.random() * 10;
+
+  function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    let amp = 16;
+    let speed = 0.015;
+
+    if (hudContext === "typing") {
+      amp = 28;
+      speed = 0.04;
+    } else if (hudContext === "uploading") {
+      amp = 10;
+      speed = 0.02;
+    }
+
+    ctx.strokeStyle = "rgba(143,168,106,0.45)";
+    ctx.lineWidth = 1.5;
+
+    ctx.beginPath();
+    for (let x=0;x<canvas.width;x++) {
+      const y =
+        canvas.height/2 +
+        Math.sin(x*0.04 + t) * amp;
+      ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+
+    t += speed;
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+function bars(canvas) {
+  const ctx = canvas.getContext("2d");
+  let values = Array.from({length:10},()=>Math.random());
+
+  function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    values = values.map(v => {
+      let delta = (Math.random()-0.5)*0.08;
+      if (hudContext === "saving") delta += 0.25;
+      return Math.min(1, Math.max(0.1, v + delta));
+    });
+
+    const w = canvas.width / values.length;
+    ctx.fillStyle = "rgba(143,168,106,0.5)";
+
+    values.forEach((v,i)=>{
+      ctx.fillRect(
+        i*w+2,
+        canvas.height,
+        w-6,
+        -v*canvas.height
+      );
+    });
+
+    setTimeout(draw, 500);
+  }
+  draw();
+}
+
+function pie(canvas) {
+  const ctx = canvas.getContext("2d");
+  let angle = Math.random() * Math.PI;
+
+  function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    let speed = 0.008;
+    if (hudContext === "uploading") speed = 0.03;
+
+    const cx = canvas.width/2;
+    const cy = canvas.height/2;
+    const r = 42;
+
+    ctx.strokeStyle = "rgba(143,168,106,0.6)";
+    ctx.lineWidth = 6;
+
+    ctx.beginPath();
+    ctx.arc(cx,cy,r,angle,angle+Math.PI*1.2);
+    ctx.stroke();
+
+    angle += speed;
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+/* ---------- INIT (STABLE DISTRIBUTION) ---------- */
+
+const types = ["waves", "bars", "pie"];
+
+const BOX_W = 220;
+const BOX_H = 140;
+const GAP = 24;
+
+// central exclusion zone (panel area)
+const centerZone = {
+  x: window.innerWidth / 2 - 220,
+  y: window.innerHeight / 2 - 260,
+  w: 440,
+  h: 520
+};
+
+function intersects(a, b) {
+  return !(
+    a.x + a.w < b.x ||
+    a.x > b.x + b.w ||
+    a.y + a.h < b.y ||
+    a.y > b.y + b.h
+  );
+}
+
+let placed = [];
+
+for (let y = 40; y < window.innerHeight - BOX_H; y += BOX_H + GAP) {
+  for (let x = 40; x < window.innerWidth - BOX_W; x += BOX_W + GAP) {
+
+    if (placed.length >= BOX_COUNT) break;
+
+    const jitterX = x + Math.random() * 30;
+    const jitterY = y + Math.random() * 30;
+
+    const candidate = {
+      x: jitterX,
+      y: jitterY,
+      w: BOX_W,
+      h: BOX_H
+    };
+
+    // skip center panel area
+    if (intersects(candidate, centerZone)) continue;
+
+    placed.push(candidate);
+
+    createBox(
+      candidate.x,
+      candidate.y,
+      types[placed.length % types.length]
+    );
+  }
+}
+
+/* ===============================
+   CONTEXT TRIGGERS
+================================ */
+
+// typing
+document.querySelectorAll("input[type='text'], textarea").forEach(el => {
+  el.addEventListener("focus", () => hudContext = "typing");
+  el.addEventListener("blur", () => hudContext = "idle");
+});
+
+// file upload
+document.getElementById("avatarInput").addEventListener("change", () => {
+  hudContext = "uploading";
+  setTimeout(() => hudContext = "idle", 2000);
+});
+
+// save button
+document.querySelector("button[onclick='saveProfile()']")
+  .addEventListener("click", () => {
+    hudContext = "saving";
+    setTimeout(() => hudContext = "idle", 1500);
+});
+
+</script>
+
+</body>
+</html>

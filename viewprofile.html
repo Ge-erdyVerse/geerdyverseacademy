@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Creator Starship — View Profile</title>
+
+<style>
+/* =====================================================
+   GLOBAL
+===================================================== */
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+  color: #eafff3;
+  background: #000;
+}
+
+/* =====================================================
+   LEFT PANELS (FROM PROFILE)
+===================================================== */
+.identity-module {
+  position: fixed;
+  top: 140px;
+  left: 40px;
+  width: 200px;
+  padding: 18px;
+  border-radius: 18px;
+  background: rgba(0,0,0,0.45);
+  border: 1px solid rgba(143,168,106,0.45);
+  backdrop-filter: blur(6px);
+  box-shadow:
+    0 0 20px rgba(143,168,106,0.3),
+    inset 0 0 20px rgba(143,168,106,0.15);
+  z-index: 10;
+}
+
+.identity-module h2 {
+  margin: 0 0 6px;
+  font-size: 1.2rem;
+}
+
+.identity-module p {
+  margin: 2px 0;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.ship-status {
+  position: fixed;
+  left: 40px;
+  bottom: 40px;
+  width: 220px;
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(0,0,0,0.45);
+  border: 1px solid rgba(143,168,106,0.45);
+  backdrop-filter: blur(6px);
+  box-shadow:
+    0 0 20px rgba(143,168,106,0.25),
+    inset 0 0 20px rgba(143,168,106,0.15);
+  z-index: 10;
+}
+
+.ship-status p {
+  margin: 2px 0;
+  font-size: 0.82rem;
+}
+
+/* =====================================================
+   CENTER FEED
+===================================================== */
+.feed-core {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: min(900px, 85%);
+  height: 75%;
+  transform: translate(-50%, -50%);
+  padding: 26px;
+  background: rgba(10,14,10,0.4);
+  border: 1px solid rgba(143,168,106,0.35);
+  border-radius: 22px;
+  box-shadow:
+    0 0 30px rgba(143,168,106,0.25),
+    inset 0 0 20px rgba(143,168,106,0.15);
+  overflow-y: auto;
+  z-index: 5;
+}
+
+/* Posts */
+.post {
+  background: rgba(20,26,18,0.55);
+  padding: 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(143,168,106,0.4);
+  margin-bottom: 18px;
+  cursor: pointer;
+}
+
+.post-text {
+  line-height: 1.5;
+}
+
+/* =====================================================
+   EXIT
+===================================================== */
+.exit {
+  position: fixed;
+  top: 30px;
+  right: 40px;
+  z-index: 20;
+}
+
+.exit button {
+  padding: 10px 18px;
+  border-radius: 16px;
+  background: rgba(143,168,106,0.35);
+  border: 1px solid rgba(143,168,106,0.5);
+  color: #eafff3;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LEFT: IDENTITY -->
+<div class="identity-module">
+  <h2 id="username">User</h2>
+  <p id="rank">Rank: Explorer</p>
+  <p id="count">Log Entries: 0</p>
+</div>
+
+<!-- LEFT: STATUS -->
+<div class="ship-status">
+  <p><strong>SHIP STATUS</strong></p>
+  <p>CPU Load: Stable</p>
+  <p>Orbit: Public Sector</p>
+</div>
+
+<!-- CENTER FEED -->
+<div class="feed-core" id="feed"></div>
+
+<!-- EXIT -->
+<div class="exit">
+  <button onclick="goBack()">Return to Feed</button>
+</div>
+
+<script>
+/* =====================================================
+   LOAD USER
+===================================================== */
+const username = localStorage.getItem("viewUser");
+const allLogs = JSON.parse(localStorage.getItem("allLogs")) || [];
+
+document.getElementById("username").textContent = username || "Unknown";
+
+/* =====================================================
+   FILTER LOGS
+===================================================== */
+const userLogs = allLogs
+  .filter(log => log.username === username)
+  .sort((a, b) => b.timestamp - a.timestamp);
+
+document.getElementById("count").textContent =
+  "Log Entries: " + userLogs.length;
+
+/* Simple rank logic */
+document.getElementById("rank").textContent =
+  "Rank: " + (
+    userLogs.length < 3 ? "Apprentice" :
+    userLogs.length < 7 ? "Lore Engineer" :
+    "Navigator"
+  );
+
+/* =====================================================
+   RENDER
+===================================================== */
+const feed = document.getElementById("feed");
+
+function render() {
+  feed.innerHTML = "";
+
+  userLogs.forEach(log => {
+    const post = document.createElement("div");
+    post.className = "post";
+    post.onclick = () => openLog(log.id);
+
+    post.innerHTML = `
+      <div class="post-text">${log.text}</div>
+    `;
+
+    feed.appendChild(post);
+  });
+}
+
+function openLog(id) {
+  localStorage.setItem("activeLogId", id);
+  window.location.href = "detailedlog.html";
+}
+
+function goBack() {
+  window.location.href = "feed.html";
+}
+
+render();
+</script>
+
+</body>
+</html>

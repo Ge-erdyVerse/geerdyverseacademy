@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Creator Starship — Log Detail</title>
+
+<style>
+/* =====================================================
+   BASE
+===================================================== */
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+  color: #eafff3;
+  background: #000;
+}
+
+/* =====================================================
+   CONTAINER
+===================================================== */
+.container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: min(900px, 92%);
+  height: 80%;
+  transform: translate(-50%, -50%);
+  padding: 28px;
+  background: rgba(10,14,10,0.45);
+  border: 1px solid rgba(143,168,106,0.35);
+  border-radius: 24px;
+  box-shadow:
+    0 0 35px rgba(143,168,106,0.3),
+    inset 0 0 22px rgba(143,168,106,0.15);
+  overflow-y: auto;
+}
+
+/* =====================================================
+   LOG
+===================================================== */
+.log {
+  background: rgba(20,26,18,0.6);
+  padding: 22px;
+  border-radius: 16px;
+  border: 1px solid rgba(143,168,106,0.45);
+  margin-bottom: 26px;
+}
+
+.log .username {
+  font-weight: 600;
+  color: rgba(170,220,180,0.95);
+  margin-bottom: 10px;
+}
+
+.log-text {
+  line-height: 1.6;
+}
+
+/* =====================================================
+   COMMENTS
+===================================================== */
+.comments {
+  margin-top: 10px;
+}
+
+.comment {
+  background: rgba(15,20,14,0.6);
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(143,168,106,0.35);
+  margin-bottom: 12px;
+}
+
+.comment-user {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin-bottom: 4px;
+}
+
+/* =====================================================
+   ADD COMMENT
+===================================================== */
+.add-comment {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.add-comment input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(143,168,106,0.4);
+  background: rgba(0,0,0,0.4);
+  color: #eafff3;
+}
+
+.add-comment button {
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: rgba(143,168,106,0.35);
+  border: 1px solid rgba(143,168,106,0.5);
+  color: #eafff3;
+  cursor: pointer;
+}
+
+/* =====================================================
+   EXIT
+===================================================== */
+.exit {
+  position: fixed;
+  top: 30px;
+  right: 40px;
+}
+
+.exit button {
+  padding: 10px 18px;
+  border-radius: 16px;
+  background: rgba(143,168,106,0.35);
+  border: 1px solid rgba(143,168,106,0.5);
+  color: #eafff3;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="container"></div>
+
+<div class="exit">
+  <button onclick="goBack()">Back</button>
+</div>
+
+<script>
+/* =====================================================
+   LOAD LOG
+===================================================== */
+const logId = localStorage.getItem("activeLogId");
+let allLogs = JSON.parse(localStorage.getItem("allLogs")) || [];
+
+const log = allLogs.find(l => l.id === logId);
+const container = document.getElementById("container");
+
+if (!log) {
+  container.innerHTML = "<p>Log not found.</p>";
+  throw new Error("Log not found");
+}
+
+/* =====================================================
+   RENDER
+===================================================== */
+function render() {
+  container.innerHTML = `
+    <div class="log">
+      <div class="username">${log.username}</div>
+      <div class="log-text">${log.text}</div>
+    </div>
+
+    <div class="comments">
+      <h3>Comments (${(log.comments || []).length})</h3>
+      ${(log.comments || []).map(c => `
+        <div class="comment">
+          <div class="comment-user">${c.user}</div>
+          <div>${c.text}</div>
+        </div>
+      `).join("")}
+
+      <div class="add-comment">
+        <input id="commentInput" placeholder="Write a comment…" />
+        <button onclick="addComment()">Post</button>
+      </div>
+    </div>
+  `;
+}
+
+function addComment() {
+  const input = document.getElementById("commentInput");
+  const text = input.value.trim();
+  if (!text) return;
+
+  log.comments = log.comments || [];
+  log.comments.push({
+    user: localStorage.getItem("penName") || "Anonymous",
+    text
+  });
+
+  localStorage.setItem("allLogs", JSON.stringify(allLogs));
+  input.value = "";
+  render();
+}
+
+/* =====================================================
+   NAV
+===================================================== */
+function goBack() {
+  history.back();
+}
+
+render();
+</script>
+
+</body>
+</html>
